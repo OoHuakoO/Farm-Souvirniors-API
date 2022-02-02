@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "3172cb59-a696-48da-960d-d0dcf07d8197",
+		"name": "Farm-souvirniors",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create-info-nft",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"tiger\",\n    \"reward\" : 5,\n    \"type\" : \"Animal\",\n    \"price\" : 50,\n     \"cost\" : {\n         \"wood\" : 200,\n         \"fruit\" : 1000\n     },\n     \"energyConsumed\" : 200\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/nft/create-info-nft",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"nft",
+						"create-info-nft"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "info-nft",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/nft/info-nft",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"nft",
+						"info-nft"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "craft-nft",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"pig\",\n    \"reward\" : 20,\n    \"type\" : \"Animal\",\n     \"cost\" : {\n         \"wood\" : 40,\n         \"fruit\" : 100\n     },\n     \"energyConsumed\" : 20\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/nft/craft-nft",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"nft",
+						"craft-nft"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-detail-nft",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/nft/get-detail-nft/1643833064212",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"nft",
+						"get-detail-nft",
+						"1643833064212"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-owner-nft",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/nft/get-owner-nft/0x0d2Ee3b5CF008D5976BC5B67d01E953b2e986EA1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"nft",
+						"get-owner-nft",
+						"0x0d2Ee3b5CF008D5976BC5B67d01E953b2e986EA1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
