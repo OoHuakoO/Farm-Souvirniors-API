@@ -6,6 +6,7 @@ const info_NFTSchema = new Schema({
   type: String,
   price : Number,
   cost : Object,
-  energyConsumed : Number
+  energy_consumed : Number,
+  amount_food : Number
 })
 module.exports = mongoose.model('info_NFT', info_NFTSchema)

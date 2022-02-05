@@ -9,7 +9,8 @@ contract NFT {
         uint16 price;
         uint16 cost_wood;
         uint16 cost_fruit;
-        uint16 energyConsumed;
+        uint16 energy_consumed;
+        uint16 amount_food;
     }
     mapping(address => uint256[]) public ownerNft;
     mapping(uint256 => info_nft) public nft;
@@ -22,7 +23,8 @@ contract NFT {
         string memory _type_nft,
         uint16 _cost_wood,
         uint16 _cost_fruit,
-        uint16 _energyConsumed
+        uint16 _energy_consumed,
+        uint16 _amount_food
     ) public {
         nft[_pid] = info_nft({
             name: _name,
@@ -31,7 +33,8 @@ contract NFT {
             price: 0,
             cost_wood: _cost_wood,
             cost_fruit: _cost_fruit,
-            energyConsumed: _energyConsumed
+            energy_consumed: _energy_consumed,
+            amount_food : _amount_food
         });
         ownerNft[msg.sender].push(_pid);
     }

@@ -3,6 +3,7 @@ const path = require("path");
 const Web3 = require("web3");
 const TruffleContract = require("@truffle/contract");
 const web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:7545");
+const web3 = new Web3(web3Provider);
 let NFT;
 const createContractInstance = async (artifactName) => {
   const artifact = JSON.parse(
@@ -25,7 +26,8 @@ const craftNFT = async (
   type_nft,
   cost_wood,
   cost_fruit,
-  energyConsumed
+  energy_consumed,
+  amount_food
 ) => {
   await NFT._craftNFT(
     pid,
@@ -34,8 +36,9 @@ const craftNFT = async (
     type_nft,
     cost_wood,
     cost_fruit,
-    energyConsumed,
-    { from: "0x0d2Ee3b5CF008D5976BC5B67d01E953b2e986EA1", gas: 1000000 }
+    energy_consumed,
+    amount_food,
+    { from: "0x1B7AAdF746c0B06CE987143C3770602e8894FD88", gas: 1000000 }
   );
   return { status: "success" };
 };
@@ -48,7 +51,8 @@ const getDetailNFT = async (pid) => {
     price,
     cost_wood,
     cost_fruit,
-    energyConsumed,
+    energy_consumed,
+    amount_food,
   } = await NFT.nft.call(pid);
   return {
     data: {
@@ -58,7 +62,8 @@ const getDetailNFT = async (pid) => {
       price: price.toString(),
       cost_wood: cost_wood.toString(),
       cost_fruit: cost_fruit.toString(),
-      energyConsumed: energyConsumed.toString(),
+      energy_consumed: energy_consumed.toString(),
+      amount_food: amount_food.toString(),
     },
   };
 };
@@ -74,4 +79,5 @@ const getOwnerNft = async (address) => {
     }
   }
 };
+
 module.exports = { craftNFT, getDetailNFT, getOwnerNft };

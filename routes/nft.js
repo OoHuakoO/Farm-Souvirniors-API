@@ -1,5 +1,7 @@
 const express = require("express");
 const Info_nft = require("../models/info_nft");
+const Owner_nft = require("../models/ownerNFT");
+const User = require("../models/user");
 const router = express.Router();
 const { craftNFT, getDetailNFT, getOwnerNft } = require("../blockchain");
 router.post("/create-info-nft", async (req, res) => {
@@ -22,25 +24,71 @@ router.get("/info-nft", async (req, res) => {
     }
   });
 });
+
 router.post("/craft-nft", async (req, res) => {
   try {
-    const { name, reward, type, cost, energyConsumed } = req.body;
-    const response = await craftNFT(
-      Date.now(),
+    const {
+      name,
+      reward,
+      type,
+      cost,
+      energy_consumed,
+      amount_food,
+      address_wallet,
+    } = req.body;
+    const pid = Date.now();
+    await craftNFT(
+      pid,
       name,
       reward,
       type,
       cost.wood,
       cost.fruit,
-      energyConsumed
-    );
-    return res.json({
-      response,
-    });
+      energy_consumed,
+      amount_food
+    )
+      .then(async () => {
+        const owner_nft = new Owner_nft({
+          pid,
+          name,
+          reward,
+          type,
+          cost,
+          energy_consumed,
+          amount_food,
+          status: "not_use",
+        });
+        await owner_nft.save(async (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            User.findOne(
+              { address_wallet: address_wallet },
+              async (err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  result.listNFT.push(data);
+                  await result.save((err, data) => {
+                    if (err) console.log(err);
+                    else {
+                      res.json({ data: data, status: "success" });
+                    }
+                  });
+                }
+              }
+            );
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } catch (err) {
     console.log(err);
   }
 });
+
 router.get("/get-detail-nft/:id", async (req, res) => {
   try {
     const id = req.params.id;
