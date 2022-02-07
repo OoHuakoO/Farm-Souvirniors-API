@@ -5,40 +5,40 @@ const TruffleContract = require("@truffle/contract");
 const HDWallet = require("@truffle/hdwallet-provider");
 let NFT;
 // Development
-// const web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:7545");
-// const createContractInstance = async (artifactName) => {
-//   const artifact = JSON.parse(
-//     fs.readFileSync(
-//       path.join(__dirname, "../build/contracts", `${artifactName}.json`)
-//     )
-//   );
-//   const contract = TruffleContract(artifact);
-//   contract.setProvider(web3Provider);
-//   return contract.deployed();
-// };
-// createContractInstance("NFT").then((instance) => {
-//   NFT = instance;
-// });
-
-// Testnet
-const web3 = new Web3(
-  new HDWallet(
-    "pen luxury three helmet switch crime music thunder casual move owner dolphin",
-    "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
-  )
-);
-
+const web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:7545");
 const createContractInstance = async (artifactName) => {
   const artifact = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "../build/contracts", "NFT.json"))
+    fs.readFileSync(
+      path.join(__dirname, "../build/contracts", `${artifactName}.json`)
+    )
   );
-  const deployNetwork = artifact.networks[3];
-  NFT = new web3.eth.Contract(
-    artifact.abi,
-    deployNetwork && deployNetwork.address
-  );
+  const contract = TruffleContract(artifact);
+  contract.setProvider(web3Provider);
+  return contract.deployed();
 };
-createContractInstance();
+createContractInstance("NFT").then((instance) => {
+  NFT = instance;
+});
+
+// Testnet
+// const web3 = new Web3(
+//   new HDWallet(
+//     "pen luxury three helmet switch crime music thunder casual move owner dolphin",
+//     "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
+//   )
+// );
+
+// const createContractInstance = async (artifactName) => {
+//   const artifact = JSON.parse(
+//     fs.readFileSync(path.join(__dirname, "../build/contracts", "NFT.json"))
+//   );
+//   const deployNetwork = artifact.networks[3];
+//   NFT = new web3.eth.Contract(
+//     artifact.abi,
+//     deployNetwork && deployNetwork.address
+//   );
+// };
+// createContractInstance();
 
 const craftNFT = async (
   pid,
