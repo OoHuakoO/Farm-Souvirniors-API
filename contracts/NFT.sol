@@ -46,4 +46,5 @@ contract NFT {
     {
         return ownerNft[_owner];
     }
+    
 }

@@ -8,6 +8,7 @@ const ownerNFT = new Schema({
   price: Number,
   cost: Object,
   energy_consumed: Number,
+  amount_food: Number,
   status: String,
   cooldownTimeFeed: Date,
   cooldownTimeHarvest: Date,

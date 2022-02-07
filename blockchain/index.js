@@ -2,22 +2,43 @@ const fs = require("fs");
 const path = require("path");
 const Web3 = require("web3");
 const TruffleContract = require("@truffle/contract");
-const web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:7545");
-const web3 = new Web3(web3Provider);
+const HDWallet = require("@truffle/hdwallet-provider");
 let NFT;
+// Development
+// const web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:7545");
+// const createContractInstance = async (artifactName) => {
+//   const artifact = JSON.parse(
+//     fs.readFileSync(
+//       path.join(__dirname, "../build/contracts", `${artifactName}.json`)
+//     )
+//   );
+//   const contract = TruffleContract(artifact);
+//   contract.setProvider(web3Provider);
+//   return contract.deployed();
+// };
+// createContractInstance("NFT").then((instance) => {
+//   NFT = instance;
+// });
+
+// Testnet
+const web3 = new Web3(
+  new HDWallet(
+    "pen luxury three helmet switch crime music thunder casual move owner dolphin",
+    "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
+  )
+);
+
 const createContractInstance = async (artifactName) => {
   const artifact = JSON.parse(
-    fs.readFileSync(
-      path.join(__dirname, "../build/contracts", `${artifactName}.json`)
-    )
+    fs.readFileSync(path.join(__dirname, "../build/contracts", "NFT.json"))
   );
-  const contract = TruffleContract(artifact);
-  contract.setProvider(web3Provider);
-  return contract.deployed();
+  const deployNetwork = artifact.networks[3];
+  NFT = new web3.eth.Contract(
+    artifact.abi,
+    deployNetwork && deployNetwork.address
+  );
 };
-createContractInstance("NFT").then((instance) => {
-  NFT = instance;
-});
+createContractInstance();
 
 const craftNFT = async (
   pid,
@@ -38,7 +59,7 @@ const craftNFT = async (
     cost_fruit,
     energy_consumed,
     amount_food,
-    { from: "0x1B7AAdF746c0B06CE987143C3770602e8894FD88", gas: 1000000 }
+    { from: "0x629812063124cE2448703B889D754b232B3622BA", gas: 3000000 }
   );
   return { status: "success" };
 };
@@ -53,7 +74,7 @@ const getDetailNFT = async (pid) => {
     cost_fruit,
     energy_consumed,
     amount_food,
-  } = await NFT.nft.call(pid);
+  } = await NFT.nft(pid).call();
   return {
     data: {
       name,
@@ -69,7 +90,8 @@ const getDetailNFT = async (pid) => {
 };
 const getOwnerNft = async (address) => {
   let jsonOnwerNFT = [];
-  const listOwnerNFT = await NFT.getNFTByOwner.call(address);
+  const listOwnerNFT = await NFT.getNFTByOwner(address).call();
+
   for (const [index, id] of listOwnerNFT.entries()) {
     await getDetailNFT(id.toString()).then((data) => {
       jsonOnwerNFT.push({ ...data.data, id: id.toString() });
@@ -79,5 +101,4 @@ const getOwnerNft = async (address) => {
     }
   }
 };
-
 module.exports = { craftNFT, getDetailNFT, getOwnerNft };

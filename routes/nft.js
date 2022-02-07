@@ -4,6 +4,7 @@ const Owner_nft = require("../models/ownerNFT");
 const User = require("../models/user");
 const router = express.Router();
 const { craftNFT, getDetailNFT, getOwnerNft } = require("../blockchain");
+
 router.post("/create-info-nft", async (req, res) => {
   const payload = req.body;
   const info_nft = new Info_nft(payload);
@@ -15,6 +16,7 @@ router.post("/create-info-nft", async (req, res) => {
     }
   });
 });
+
 router.get("/info-nft", async (req, res) => {
   Info_nft.find({}, (err, data) => {
     if (err) {
@@ -37,6 +39,7 @@ router.post("/craft-nft", async (req, res) => {
       address_wallet,
     } = req.body;
     const pid = Date.now();
+
     await craftNFT(
       pid,
       name,
@@ -49,7 +52,7 @@ router.post("/craft-nft", async (req, res) => {
     )
       .then(async () => {
         const owner_nft = new Owner_nft({
-          pid,
+          nft_id: pid,
           name,
           reward,
           type,
@@ -101,17 +104,45 @@ router.get("/get-detail-nft/:id", async (req, res) => {
     console.log(err);
   }
 });
+
 router.get("/get-owner-nft/:address", async (req, res) => {
   try {
     const address = req.params.address;
     const response = await getOwnerNft(address);
-    return res.json({
-      data: response,
-      status: "success",
-    });
+    console.log(response)
+    User.findOne({ address_wallet: address })
+      .populate("listNFT")
+      .exec(async (error, result) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('ok')
+          await response.map(
+            async (dataFromSmartContract, indexFromSmartContract) => {
+              await result.listNFT.map((dataFromDB, indexFromDB) => {
+                if (dataFromSmartContract.id === dataFromDB.nft_id) {
+                  dataFromSmartContract.status = dataFromDB.status;
+                }
+                if (
+                  response.length - 1 === indexFromSmartContract &&
+                  result.listNFT.length - 1 === indexFromDB
+                ) {
+              
+                  return res.json({
+                    data: response,
+                    status: "success",
+                  });
+                }
+              });
+            }
+          );
+        }
+      });
   } catch (err) {
     console.log(err);
   }
 });
+
+
 
 module.exports = router;

@@ -1,3 +1,6 @@
+var HDWalletProvider = require("truffle-hdwallet-provider");
+const MNEMONIC = 'pen luxury three helmet switch crime music thunder casual move owner dolphin';
+
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -41,11 +44,21 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    // development: {
-    //  host: "127.0.0.1",     // Localhost (default: none)
-    //  port: 8545,            // Standard Ethereum port (default: none)
-    //  network_id: "*",       // Any network (default: none)
-    // },
+    development: {
+     host: "127.0.0.1",     // Localhost (default: none)
+     port: 7545,            // Standard Ethereum port (default: none)
+     network_id: "*",       // Any network (default: none)
+    },
+    ropsten: {
+      provider: function() {
+        return new HDWalletProvider(MNEMONIC, "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf")
+      },
+      network_id: 3,
+      gas: 5500000,      //make sure this gas allocation isn't over 4M, which is the max
+      confirmation : 2,
+      timeoutBlocks : 200,
+      skipDryRun : true
+    }
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
