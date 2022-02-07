@@ -39,54 +39,99 @@ router.post("/craft-nft", async (req, res) => {
       address_wallet,
     } = req.body;
     const pid = Date.now();
-
-    await craftNFT(
-      pid,
-      name,
-      reward,
-      type,
-      cost.wood,
-      cost.fruit,
-      energy_consumed,
-      amount_food
-    )
-      .then(async () => {
-        const owner_nft = new Owner_nft({
-          nft_id: pid,
-          name,
-          reward,
-          type,
-          cost,
-          energy_consumed,
-          amount_food,
-          status: "not_use",
-        });
-        await owner_nft.save(async (err, data) => {
-          if (err) {
-            console.log(err);
-          } else {
-            User.findOne(
-              { address_wallet: address_wallet },
-              async (err, result) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  result.listNFT.push(data);
-                  await result.save((err, data) => {
-                    if (err) console.log(err);
-                    else {
-                      res.json({ data: data, status: "success" });
-                    }
-                  });
-                }
-              }
-            );
-          }
-        });
-      })
-      .catch((err) => {
+    Info_nft.findOne({ name: name }, (err, data) => {
+      if (err) {
         console.log(err);
-      });
+      } else {
+        User.findOne(
+          { address_wallet: address_wallet },
+          async (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              if (
+                result.resource.fruit < data.cost.fruit ||
+                result.resource.wood < data.cost.wood ||
+                result.energy < data.energy_consumed
+              ) {
+                res.json({ data: "please add resource", status: "false" });
+              } else {
+                await craftNFT(
+                  pid,
+                  name,
+                  reward,
+                  type,
+                  cost.wood,
+                  cost.fruit,
+                  energy_consumed,
+                  amount_food
+                )
+                  .then(async () => {
+                    const owner_nft = new Owner_nft({
+                      nft_id: pid,
+                      name,
+                      reward,
+                      type,
+                      cost,
+                      energy_consumed,
+                      amount_food,
+                      status: "not_use",
+                    });
+                    await owner_nft.save(async (err, data) => {
+                      if (err) {
+                        console.log(err);
+                      } else {
+                        User.findOne(
+                          { address_wallet: address_wallet },
+                          async (err, result) => {
+                            if (err) {
+                              console.log(err);
+                            } else {
+                              result.listNFT.push(data);
+                              User.updateMany(
+                                {
+                                  address_wallet: address_wallet,
+                                },
+                                {
+                                  $set: {
+                                    "resource.fruit":
+                                      result.resource.fruit - cost.fruit,
+                                    "resource.wood":
+                                      result.resource.wood - cost.wood,
+                                    energy: result.energy - energy_consumed,
+                                  },
+                                },
+                                async (err) => {
+                                  if (err) {
+                                    console.log(err);
+                                  } else {
+                                    await result.save((err, data) => {
+                                      if (err) console.log(err);
+                                      else {
+                                        res.json({
+                                          data: data,
+                                          status: "success",
+                                        });
+                                      }
+                                    });
+                                  }
+                                }
+                              );
+                            }
+                          }
+                        );
+                      }
+                    });
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+            }
+          }
+        );
+      }
+    });
   } catch (err) {
     console.log(err);
   }
@@ -105,18 +150,16 @@ router.get("/get-detail-nft/:id", async (req, res) => {
   }
 });
 
-router.get("/get-owner-nft/:address", async (req, res) => {
+router.get("/webhook/get-owner-nft/:address", async (req, res) => {
   try {
     const address = req.params.address;
     const response = await getOwnerNft(address);
-    console.log(response)
     User.findOne({ address_wallet: address })
       .populate("listNFT")
       .exec(async (error, result) => {
         if (error) {
           console.log(error);
         } else {
-          console.log('ok')
           await response.map(
             async (dataFromSmartContract, indexFromSmartContract) => {
               await result.listNFT.map((dataFromDB, indexFromDB) => {
@@ -127,7 +170,6 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                   response.length - 1 === indexFromSmartContract &&
                   result.listNFT.length - 1 === indexFromDB
                 ) {
-              
                   return res.json({
                     data: response,
                     status: "success",
@@ -142,7 +184,5 @@ router.get("/get-owner-nft/:address", async (req, res) => {
     console.log(err);
   }
 });
-
-
 
 module.exports = router;
