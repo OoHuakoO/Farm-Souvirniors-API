@@ -27,6 +27,116 @@ router.get("/info-nft", async (req, res) => {
   });
 });
 
+router.post("/harvest-nft", async (req, res) => {
+  const { address_wallet, nft_id } = req.body;
+  Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (
+        data.timeHarvest &&
+        moment(data.timeHarvest).format() <= moment().format()
+      ) {
+        User.findOne({ address_wallet: address_wallet }, (err, result) => {
+          if (err) {
+            console.log(err);
+          } else if (result.energy < data.energy_consumed) {
+            res.json({
+              data: "please add energy",
+              status: "false",
+            });
+          } else {
+            Owner_nft.updateMany(
+              {
+                nft_id: nft_id,
+              },
+              {
+                $set: {
+                  timeHarvest: null,
+                  status: "not_use",
+                  timeFeed: null,
+                },
+              },
+              async (err) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  if (data.type === "animal") {
+                    User.updateMany(
+                      { address_wallet: address_wallet },
+                      {
+                        $set: {
+                          energy: result.energy - data.energy_consumed,
+                          "resource.meat": result.resource.meat + data.reward,
+                        },
+                      },
+                      (err) => {
+                        if (err) {
+                          console.log(err);
+                        } else {
+                          res.json({
+                            data: "harvest successfull",
+                            status: "success",
+                          });
+                        }
+                      }
+                    );
+                  } else if (data.type === "fruit") {
+                    User.updateMany(
+                      { address_wallet: address_wallet },
+                      {
+                        $set: {
+                          energy: result.energy - data.energy_consumed,
+                          "resource.fruit": result.resource.fruit + data.reward,
+                        },
+                      },
+                      (err) => {
+                        if (err) {
+                          console.log(err);
+                        } else {
+                          res.json({
+                            data: "harvest successfull",
+                            status: "success",
+                          });
+                        }
+                      }
+                    );
+                  } else if (data.type === "vegatable") {
+                    User.updateMany(
+                      { address_wallet: address_wallet },
+                      {
+                        $set: {
+                          energy: result.energy - data.energy_consumed,
+                          "resource.wood": result.resource.wood + data.reward,
+                        },
+                      },
+                      (err) => {
+                        if (err) {
+                          console.log(err);
+                        } else {
+                          res.json({
+                            data: "harvest successfull",
+                            status: "success",
+                          });
+                        }
+                      }
+                    );
+                  }
+                }
+              }
+            );
+          }
+        });
+      } else {
+        res.json({
+          data: "waiting for cooldownHarvest",
+          status: "false",
+        });
+      }
+    }
+  });
+});
+
 router.post("/feed-nft", async (req, res) => {
   const { address_wallet, nft_id } = req.body;
   const dateHarvest = moment().add(1, "minutes");
@@ -79,7 +189,7 @@ router.post("/feed-nft", async (req, res) => {
                         console.log(err);
                       } else {
                         res.json({
-                          data: "10.00",
+                          data: "01.00",
                           status: "success",
                         });
                       }
@@ -139,7 +249,7 @@ router.post("/plant-nft", async (req, res) => {
                       console.log(err);
                     } else {
                       res.json({
-                        data: "10.00",
+                        data: "01.00",
                         status: "success",
                       });
                     }
