@@ -302,7 +302,8 @@ router.post("/craft-nft", async (req, res) => {
                   cost.wood,
                   cost.fruit,
                   energy_consumed,
-                  amount_food
+                  amount_food,
+                  address_wallet
                 )
                   .then(async () => {
                     const owner_nft = new Owner_nft({

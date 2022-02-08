@@ -50,6 +50,7 @@ const craftNFT = async (
   cost_fruit,
   energy_consumed,
   amount_food,
+  address_wallet
 ) => {
   await NFT._craftNFT(
     pid,
@@ -61,7 +62,7 @@ const craftNFT = async (
     cost_fruit,
     energy_consumed,
     amount_food,
-    { from: "0x1B7AAdF746c0B06CE987143C3770602e8894FD88", gas: 3000000 }
+    { from: address_wallet, gas: 3000000 }
   );
   return { status: "success" };
 };
