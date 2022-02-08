@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ownerNFT = new Schema({
+  address_wallet : String,
   nft_id: String,
   name: String,
+  picture : String,
   reward: Number,
   type: String,
   price: Number,
@@ -10,7 +12,7 @@ const ownerNFT = new Schema({
   energy_consumed: Number,
   amount_food: Number,
   status: String,
-  cooldownTimeFeed: Date,
-  cooldownTimeHarvest: Date,
+  timeFeed: Date,
+  timeHarvest: Date,
 });
 module.exports = mongoose.model("owner_nft", ownerNFT);
