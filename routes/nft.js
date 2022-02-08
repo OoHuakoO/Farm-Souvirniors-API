@@ -12,7 +12,7 @@ router.post("/create-info-nft", async (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.json({ data: data, status: 200 });
+      res.json({ data: data, status: "success" });
     }
   });
 });
@@ -22,28 +22,21 @@ router.get("/info-nft", async (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.json({ data: data, status: 200 });
+      res.json({ data: data, status: "success" });
     }
   });
 });
 
 router.post("/feed-nft", async (req, res) => {
   const { address_wallet, nft_id } = req.body;
-  const dateHarvest = moment().add(10, "minutes");
+  const dateHarvest = moment().add(1, "minutes");
   Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
     if (err) {
       console.log(err);
     } else {
       if (
         data.timeFeed &&
-        data.timeFeed <= moment() &&
-        moment
-          .utc(
-            moment
-              .duration(moment(data.timeFeed).diff(Date.now()), "m")
-              .asMinutes()
-          )
-          .format("mm:ss") === "00.00"
+        moment(data.timeFeed).format() <= moment().format()
       ) {
         User.findOne({ address_wallet: address_wallet }, (err, result) => {
           if (err) {
@@ -99,7 +92,7 @@ router.post("/feed-nft", async (req, res) => {
         });
       } else {
         res.json({
-          data: "waiting for cooldowntime",
+          data: "waiting for cooldownFeed",
           status: "false",
         });
       }
@@ -109,7 +102,7 @@ router.post("/feed-nft", async (req, res) => {
 
 router.post("/plant-nft", async (req, res) => {
   const { address_wallet, nft_id } = req.body;
-  const datePlant = moment().add(10, "minutes");
+  const datePlant = moment().add(1, "minutes");
   Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
     if (err) {
       console.log(err);
@@ -165,6 +158,7 @@ router.post("/craft-nft", async (req, res) => {
   try {
     const {
       name,
+      picture,
       reward,
       type,
       cost,
@@ -192,6 +186,7 @@ router.post("/craft-nft", async (req, res) => {
                 await craftNFT(
                   pid,
                   name,
+                  picture,
                   reward,
                   type,
                   cost.wood,
@@ -201,8 +196,10 @@ router.post("/craft-nft", async (req, res) => {
                 )
                   .then(async () => {
                     const owner_nft = new Owner_nft({
+                      address_wallet: address_wallet,
                       nft_id: pid,
                       name,
+                      picture,
                       reward,
                       type,
                       cost,
@@ -329,10 +326,14 @@ router.get("/game/get-owner-nft/:address", async (req, res) => {
           console.log(error);
         } else {
           result.listNFT.map((dataFromDB, indexFromDB) => {
-            if (dataFromDB.timeFeed && dataFromDB.timeFeed > moment()) {
+            if (
+              dataFromDB.timeFeed &&
+              moment(dataFromDB.timeFeed).format() > moment().format()
+            ) {
               newListNFT.push({
                 nft_id: dataFromDB.nft_id,
                 name: dataFromDB.name,
+                picture: dataFromDB.picture,
                 type: dataFromDB.type,
                 status: dataFromDB.status,
                 cooldownFeedTime: moment
@@ -346,10 +347,49 @@ router.get("/game/get-owner-nft/:address", async (req, res) => {
                   )
                   .format("mm:ss"),
               });
-            } else if (dataFromDB.timeFeed && dataFromDB.timeFeed < moment()) {
+            } else if (
+              dataFromDB.timeHarvest &&
+              !dataFromDB.timeFeed &&
+              moment(dataFromDB.timeHarvest).format() > moment().format()
+            ) {
               newListNFT.push({
                 nft_id: dataFromDB.nft_id,
                 name: dataFromDB.name,
+                picture: dataFromDB.picture,
+                type: dataFromDB.type,
+                status: dataFromDB.status,
+                cooldownHarvestTime: moment
+                  .utc(
+                    moment
+                      .duration(
+                        moment(dataFromDB.timeHarvest).diff(Date.now()),
+                        "m"
+                      )
+                      .asMinutes()
+                  )
+                  .format("mm:ss"),
+              });
+            } else if (
+              dataFromDB.timeHarvest &&
+              !dataFromDB.timeFeed &&
+              moment(dataFromDB.timeHarvest).format() < moment().format()
+            ) {
+              newListNFT.push({
+                nft_id: dataFromDB.nft_id,
+                name: dataFromDB.name,
+                picture: dataFromDB.picture,
+                type: dataFromDB.type,
+                status: dataFromDB.status,
+                cooldownHarvestTime: "00.00",
+              });
+            } else if (
+              dataFromDB.timeFeed &&
+              moment(dataFromDB.timeFeed).format() < moment().format()
+            ) {
+              newListNFT.push({
+                nft_id: dataFromDB.nft_id,
+                name: dataFromDB.name,
+                picture: dataFromDB.picture,
                 type: dataFromDB.type,
                 status: dataFromDB.status,
                 cooldownFeedTime: "00.00",
@@ -358,6 +398,7 @@ router.get("/game/get-owner-nft/:address", async (req, res) => {
               newListNFT.push({
                 nft_id: dataFromDB.nft_id,
                 name: dataFromDB.name,
+                picture: dataFromDB.picture,
                 type: dataFromDB.type,
                 status: dataFromDB.status,
               });

@@ -4,6 +4,7 @@ pragma solidity >=0.4.22 <0.9.0;
 contract NFT {
     struct info_nft {
         string name;
+        string picture;
         uint16 reward;
         string type_nft;
         uint16 price;
@@ -19,6 +20,7 @@ contract NFT {
     function _craftNFT(
         uint256 _pid,
         string memory _name,
+        string memory _picture,
         uint16 _reward,
         string memory _type_nft,
         uint16 _cost_wood,
@@ -28,6 +30,7 @@ contract NFT {
     ) public {
         nft[_pid] = info_nft({
             name: _name,
+            picture : _picture,
             reward: _reward,
             type_nft: _type_nft,
             price: 0,

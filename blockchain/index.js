@@ -43,16 +43,18 @@ createContractInstance("NFT").then((instance) => {
 const craftNFT = async (
   pid,
   name,
+  picture,
   reward,
   type_nft,
   cost_wood,
   cost_fruit,
   energy_consumed,
-  amount_food
+  amount_food,
 ) => {
   await NFT._craftNFT(
     pid,
     name,
+    picture,
     reward,
     type_nft,
     cost_wood,
@@ -67,6 +69,7 @@ const craftNFT = async (
 const getDetailNFT = async (pid) => {
   const {
     name,
+    picture,
     reward,
     type_nft,
     price,
@@ -78,6 +81,7 @@ const getDetailNFT = async (pid) => {
   return {
     data: {
       name,
+      picture: picture.toString(),
       reward: reward.toString(),
       type_nft,
       price: price.toString(),

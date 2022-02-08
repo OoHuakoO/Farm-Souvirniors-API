@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ownerNFT = new Schema({
+  address_wallet : String,
   nft_id: String,
   name: String,
+  picture : String,
   reward: Number,
   type: String,
   price: Number,
