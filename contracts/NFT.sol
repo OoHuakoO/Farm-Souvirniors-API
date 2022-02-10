@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-
 contract NFT {
     struct info_nft {
         uint256 nft_id;
@@ -13,9 +12,10 @@ contract NFT {
         uint16 cost_fruit;
         uint16 energy_consumed;
         uint16 amount_food;
+        address seller;
     }
     mapping(uint256 => address) public ownerNft;
-    mapping(address => uint256) ownerNFTCount;
+    mapping(address => uint256) public ownerNFTCount;
     info_nft[] public nft;
 
     function _craftNFT(
@@ -40,7 +40,8 @@ contract NFT {
                 _cost_wood,
                 _cost_fruit,
                 _energy_consumed,
-                _amount_food
+                _amount_food,
+                address(0)
             )
         );
         uint256 id = nft.length - 1;
@@ -62,5 +63,14 @@ contract NFT {
             }
         }
         return result;
+    }
+
+    function sellNFT(uint256 _tokenID, uint16 _price) public {
+        info_nft storage myNFT = nft[_tokenID];
+        myNFT.price = _price;
+        myNFT.seller = msg.sender;
+        ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] - 1;
+        ownerNFTCount[address(this)] = ownerNFTCount[address(this)] + 1;
+        ownerNft[_tokenID] = address(this);
     }
 }

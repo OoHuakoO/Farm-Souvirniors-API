@@ -4,6 +4,7 @@ const Web3 = require("web3");
 const TruffleContract = require("@truffle/contract");
 const HDWallet = require("@truffle/hdwallet-provider");
 let NFT;
+
 // Development
 const web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:7545");
 const createContractInstance = async (artifactName) => {
@@ -79,6 +80,7 @@ const getDetailNFT = async (pid) => {
     cost_fruit,
     energy_consumed,
     amount_food,
+    seller,
   } = await NFT.nft.call(pid);
   return {
     data: {
@@ -92,6 +94,7 @@ const getDetailNFT = async (pid) => {
       cost_fruit: cost_fruit.toString(),
       energy_consumed: energy_consumed.toString(),
       amount_food: amount_food.toString(),
+      seller: seller.toString(),
     },
   };
 };
@@ -108,4 +111,17 @@ const getOwnerNft = async (address) => {
   }
 };
 
-module.exports = { craftNFT, getDetailNFT, getOwnerNft };
+const sellNFT = async (address_wallet, nft_id, price) => {
+  await NFT.sellNFT(nft_id, price, { from: address_wallet, gas: 3000000 });
+  return { status: "success" };
+};
+const getContractAddress = async () => {
+  return NFT.address;
+};
+module.exports = {
+  craftNFT,
+  getDetailNFT,
+  getOwnerNft,
+  sellNFT,
+  getContractAddress,
+};
