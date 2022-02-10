@@ -3,7 +3,11 @@ const Info_nft = require("../models/info_nft");
 const Owner_nft = require("../models/ownerNFT");
 const User = require("../models/user");
 const router = express.Router();
-const { craftNFT, getDetailNFT, getOwnerNft } = require("../blockchain");
+const {
+  craftNFT,
+  getDetailNFT,
+  getOwnerNft,
+} = require("../blockchain");
 const moment = require("moment");
 router.post("/create-info-nft", async (req, res) => {
   const payload = req.body;
@@ -26,6 +30,7 @@ router.get("/info-nft", async (req, res) => {
     }
   });
 });
+
 
 router.post("/harvest-nft", async (req, res) => {
   const { address_wallet, nft_id } = req.body;
@@ -403,9 +408,8 @@ router.get("/webhook/get-owner-nft/:address", async (req, res) => {
           await response.map(
             async (dataFromSmartContract, indexFromSmartContract) => {
               await result.listNFT.map((dataFromDB, indexFromDB) => {
-                if (dataFromSmartContract.id === dataFromDB.nft_id) {
+                if (dataFromSmartContract.nft_id === dataFromDB.nft_id) {
                   dataFromSmartContract.status = dataFromDB.status;
-                  dataFromSmartContract.timeFeed = dataFromDB.timeFeed;
                 }
                 if (
                   response.length - 1 === indexFromSmartContract &&

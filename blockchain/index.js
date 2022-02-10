@@ -69,6 +69,7 @@ const craftNFT = async (
 
 const getDetailNFT = async (pid) => {
   const {
+    nft_id,
     name,
     picture,
     reward,
@@ -81,10 +82,11 @@ const getDetailNFT = async (pid) => {
   } = await NFT.nft.call(pid);
   return {
     data: {
-      name,
+      nft_id: nft_id.toString(),
+      name: name.toString(),
       picture: picture.toString(),
       reward: reward.toString(),
-      type_nft,
+      type_nft: type_nft.toString(),
       price: price.toString(),
       cost_wood: cost_wood.toString(),
       cost_fruit: cost_fruit.toString(),
@@ -96,14 +98,14 @@ const getDetailNFT = async (pid) => {
 const getOwnerNft = async (address) => {
   let jsonOnwerNFT = [];
   const listOwnerNFT = await NFT.getNFTByOwner.call(address);
-
   for (const [index, id] of listOwnerNFT.entries()) {
     await getDetailNFT(id.toString()).then((data) => {
-      jsonOnwerNFT.push({ ...data.data, id: id.toString() });
+      jsonOnwerNFT.push({ ...data.data, tokenID: id.toString() });
     });
     if (index === listOwnerNFT.length - 1) {
       return jsonOnwerNFT;
     }
   }
 };
+
 module.exports = { craftNFT, getDetailNFT, getOwnerNft };
