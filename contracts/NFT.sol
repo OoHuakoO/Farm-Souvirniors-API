@@ -80,7 +80,6 @@ contract NFT {
         uint16 _price,
         address seller
     ) public payable {
-        require(msg.value != _price, "Insufficient payment");
         payable(seller).transfer(msg.value);
         info_nft storage myNFT = nft[_tokenID];
         myNFT.price = _price;
