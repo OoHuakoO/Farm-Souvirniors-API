@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
+
 contract NFT {
     struct info_nft {
         uint256 nft_id;
@@ -72,5 +73,20 @@ contract NFT {
         ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] - 1;
         ownerNFTCount[address(this)] = ownerNFTCount[address(this)] + 1;
         ownerNft[_tokenID] = address(this);
+    }
+
+    function buyNFT(
+        uint256 _tokenID,
+        uint16 _price,
+        address seller
+    ) public payable {
+        require(msg.value != _price, "Insufficient payment");
+        payable(seller).transfer(msg.value);
+        info_nft storage myNFT = nft[_tokenID];
+        myNFT.price = _price;
+        myNFT.seller = address(0);
+        ownerNFTCount[address(this)] = ownerNFTCount[address(this)] - 1;
+        ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] + 1;
+        ownerNft[_tokenID] = msg.sender;
     }
 }

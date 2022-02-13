@@ -9,6 +9,7 @@ const {
   getOwnerNft,
   sellNFT,
   getContractAddress,
+  buyNFT,
 } = require("../blockchain");
 const moment = require("moment");
 router.post("/create-info-nft", async (req, res) => {
@@ -31,6 +32,25 @@ router.get("/info-nft", async (req, res) => {
       res.json({ data: data, status: "success" });
     }
   });
+});
+
+router.post("/buy-nft", async (req, res) => {
+  try {
+    const { buyer_address_wallet, seller_address_wallet, tokenID, price } =
+      req.body;
+    await buyNFT(buyer_address_wallet, seller_address_wallet, tokenID, price)
+      .then(() => {
+        res.json({
+          data: "buy nft successfully",
+          status: "success",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.post("/sell-nft", async (req, res) => {
@@ -346,7 +366,6 @@ router.post("/craft-nft", async (req, res) => {
                 )
                   .then(async () => {
                     const owner_nft = new Owner_nft({
-                      address_wallet: address_wallet,
                       nft_id: pid,
                       name,
                       picture,
@@ -429,14 +448,30 @@ router.get("/get-detail-nft/:id", async (req, res) => {
   }
 });
 
-router.get("/get-nft-martketplace", async (req, res) => {
+router.get("/get-nft-martketplace/:address_wallet", async (req, res) => {
   try {
+    const { address_wallet } = req.params;
     const contractAddress = await getContractAddress();
     const response = await getOwnerNft(contractAddress);
-    return res.json({
-      data: response,
-      status: "success",
-    });
+    const listOwnerNFT = [];
+    if (response) {
+      response.map((data, index) => {
+        if (data.seller !== address_wallet) {
+          listOwnerNFT.push(data);
+        }
+        if (response.length - 1 === index) {
+          return res.json({
+            data: listOwnerNFT,
+            status: "success",
+          });
+        }
+      });
+    } else {
+      return res.json({
+        data: listOwnerNFT,
+        status: "success",
+      });
+    }
   } catch (err) {
     console.log(err);
   }
@@ -448,17 +483,24 @@ router.get("/get-owner-nft-martketplace/:address_wallet", async (req, res) => {
     const contractAddress = await getContractAddress();
     const response = await getOwnerNft(contractAddress);
     const listOwnerNFT = [];
-    response.map((data, index) => {
-      if (data.seller === address_wallet) {
-        listOwnerNFT.push(data);
-      }
-      if (response.length - 1 === index) {
-        return res.json({
-          data: listOwnerNFT,
-          status: "success",
-        });
-      }
-    });
+    if (response) {
+      response.map((data, index) => {
+        if (data.seller === address_wallet) {
+          listOwnerNFT.push(data);
+        }
+        if (response.length - 1 === index) {
+          return res.json({
+            data: listOwnerNFT,
+            status: "success",
+          });
+        }
+      });
+    } else {
+      return res.json({
+        data: listOwnerNFT,
+        status: "success",
+      });
+    }
   } catch (err) {
     console.log(err);
   }
@@ -468,7 +510,6 @@ router.get("/webhook/get-owner-nft/:address", async (req, res) => {
   try {
     const address = req.params.address;
     const response = await getOwnerNft(address);
-
     if (!response) {
       return res.json({
         data: [],

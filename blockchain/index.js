@@ -4,42 +4,43 @@ const Web3 = require("web3");
 const TruffleContract = require("@truffle/contract");
 const HDWallet = require("@truffle/hdwallet-provider");
 let NFT;
-
 // Development
-const web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:7545");
-const createContractInstance = async (artifactName) => {
-  const artifact = JSON.parse(
-    fs.readFileSync(
-      path.join(__dirname, "../build/contracts", `${artifactName}.json`)
-    )
-  );
-  const contract = TruffleContract(artifact);
-  contract.setProvider(web3Provider);
-  return contract.deployed();
-};
-createContractInstance("NFT").then((instance) => {
-  NFT = instance;
-});
-
+// const web3 = new Web3("http://127.0.0.1:7545");
 // Testnet
-// const web3 = new Web3(
-//   new HDWallet(
-//     "pen luxury three helmet switch crime music thunder casual move owner dolphin",
-//     "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
-//   )
-// );
+const web3 = new Web3(
+  new HDWallet(
+    "pen luxury three helmet switch crime music thunder casual move owner dolphin",
+    "https://data-seed-prebsc-1-s1.binance.org:8545"
+  )
+);
 
 // const createContractInstance = async (artifactName) => {
 //   const artifact = JSON.parse(
-//     fs.readFileSync(path.join(__dirname, "../build/contracts", "NFT.json"))
+//     fs.readFileSync(
+//       path.join(__dirname, "../build/contracts", `${artifactName}.json`)
+//     )
 //   );
-//   const deployNetwork = artifact.networks[3];
-//   NFT = new web3.eth.Contract(
-//     artifact.abi,
-//     deployNetwork && deployNetwork.address
-//   );
+//   const contract = TruffleContract(artifact);
+//   contract.setProvider(web3Provider);
+//   return contract.deployed();
 // };
-// createContractInstance();
+// createContractInstance("NFT").then((instance) => {
+//   NFT = instance;
+// console.log(instance)
+// });
+
+const createContractInstance = async () => {
+  const artifact = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "../build/contracts", "NFT.json"))
+  );
+  const netId = await web3.eth.net.getId();
+  const deployNetwork = artifact.networks[netId];
+  NFT = new web3.eth.Contract(
+    artifact.abi,
+    deployNetwork && deployNetwork.address
+  );
+};
+createContractInstance();
 
 const craftNFT = async (
   pid,
@@ -53,18 +54,19 @@ const craftNFT = async (
   amount_food,
   address_wallet
 ) => {
-  await NFT._craftNFT(
-    pid,
-    name,
-    picture,
-    reward,
-    type_nft,
-    cost_wood,
-    cost_fruit,
-    energy_consumed,
-    amount_food,
-    { from: address_wallet, gas: 3000000 }
-  );
+  await NFT.methods
+    ._craftNFT(
+      pid,
+      name,
+      picture,
+      reward,
+      type_nft,
+      cost_wood,
+      cost_fruit,
+      energy_consumed,
+      amount_food
+    )
+    .send({ from: address_wallet, gas: 3000000 });
   return { status: "success" };
 };
 
@@ -81,7 +83,7 @@ const getDetailNFT = async (pid) => {
     energy_consumed,
     amount_food,
     seller,
-  } = await NFT.nft.call(pid);
+  } = await NFT.methods.nft(pid).call();
   return {
     data: {
       nft_id: nft_id.toString(),
@@ -100,7 +102,7 @@ const getDetailNFT = async (pid) => {
 };
 const getOwnerNft = async (address) => {
   let jsonOnwerNFT = [];
-  const listOwnerNFT = await NFT.getNFTByOwner.call(address);
+  const listOwnerNFT = await NFT.methods.getNFTByOwner(address).call();
   for (const [index, id] of listOwnerNFT.entries()) {
     await getDetailNFT(id.toString()).then((data) => {
       jsonOnwerNFT.push({ ...data.data, tokenID: id.toString() });
@@ -112,16 +114,35 @@ const getOwnerNft = async (address) => {
 };
 
 const sellNFT = async (address_wallet, nft_id, price) => {
-  await NFT.sellNFT(nft_id, price, { from: address_wallet, gas: 3000000 });
+  await NFT.methods
+    .sellNFT(nft_id, price)
+    .send({ from: address_wallet, gas: 3000000 });
   return { status: "success" };
 };
+
+const buyNFT = async (
+  buyer_address_wallet,
+  seller_address_wallet,
+  nft_id,
+  price
+) => {
+  
+  await NFT.methods.buyNFT(nft_id, price,seller_address_wallet).send({
+    from: buyer_address_wallet,
+    gas: 3000000,
+    value: web3.utils.toWei(price, "ether"),
+  });
+  return { status: "success" };
+};
+
 const getContractAddress = async () => {
-  return NFT.address;
+  return NFT._address;
 };
 module.exports = {
   craftNFT,
   getDetailNFT,
   getOwnerNft,
   sellNFT,
+  buyNFT,
   getContractAddress,
 };
