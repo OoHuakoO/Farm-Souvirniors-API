@@ -112,7 +112,7 @@ const getOwnerNft = async (address) => {
   const listOwnerNFT = await NFT.methods.getNFTByOwner(address).call();
   for (const [index, id] of listOwnerNFT.entries()) {
     await getDetailNFT(id.toString()).then((data) => {
-      jsonOnwerNFT.push({ ...data.data, tokenID: id.toString() });
+      jsonOnwerNFT.push({ ...data.data, indexNFT: id.toString() });
     });
     if (index === listOwnerNFT.length - 1) {
       return jsonOnwerNFT;
@@ -120,9 +120,16 @@ const getOwnerNft = async (address) => {
   }
 };
 
-const sellNFT = async (address_wallet, nft_id, price) => {
+const sellNFT = async (address_wallet, indexNFT, price) => {
   await NFT.methods
-    .sellNFT(nft_id, price)
+    .sellNFT(indexNFT, price)
+    .send({ from: address_wallet, gas: 3000000 });
+  return { status: "success" };
+};
+
+const cancleNFT = async (address_wallet, indexNFT) => {
+  await NFT.methods
+    .cancleNFT(indexNFT)
     .send({ from: address_wallet, gas: 3000000 });
   return { status: "success" };
 };
@@ -130,11 +137,11 @@ const sellNFT = async (address_wallet, nft_id, price) => {
 const buyNFT = async (
   buyer_address_wallet,
   seller_address_wallet,
-  nft_id,
+  indexNFT,
   price
 ) => {
   
-  await NFT.methods.buyNFT(nft_id, price,seller_address_wallet).send({
+  await NFT.methods.buyNFT(indexNFT, price,seller_address_wallet).send({
     from: buyer_address_wallet,
     gas: 3000000,
     value: web3.utils.toWei(price, "ether"),
@@ -152,4 +159,5 @@ module.exports = {
   sellNFT,
   buyNFT,
   getContractAddress,
+  cancleNFT,
 };

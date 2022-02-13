@@ -66,26 +66,35 @@ contract NFT {
         return result;
     }
 
-    function sellNFT(uint256 _tokenID, uint16 _price) public {
-        info_nft storage myNFT = nft[_tokenID];
+    function sellNFT(uint256 _indexNFT, uint16 _price) public {
+        info_nft storage myNFT = nft[_indexNFT];
         myNFT.price = _price;
         myNFT.seller = msg.sender;
         ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] - 1;
         ownerNFTCount[address(this)] = ownerNFTCount[address(this)] + 1;
-        ownerNft[_tokenID] = address(this);
+        ownerNft[_indexNFT] = address(this);
     }
 
     function buyNFT(
-        uint256 _tokenID,
+        uint256 _indexNFT,
         uint16 _price,
         address seller
     ) public payable {
         payable(seller).transfer(msg.value);
-        info_nft storage myNFT = nft[_tokenID];
+        info_nft storage myNFT = nft[_indexNFT];
         myNFT.price = _price;
         myNFT.seller = address(0);
         ownerNFTCount[address(this)] = ownerNFTCount[address(this)] - 1;
         ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] + 1;
-        ownerNft[_tokenID] = msg.sender;
+        ownerNft[_indexNFT] = msg.sender;
+    }
+
+    function cancleNFT(uint256 _indexNFT) public {
+        info_nft storage myNFT = nft[_indexNFT];
+        myNFT.price = 0;
+        myNFT.seller = address(0);
+        ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] + 1;
+        ownerNFTCount[address(this)] = ownerNFTCount[address(this)] - 1;
+        ownerNft[_indexNFT] = msg.sender;
     }
 }

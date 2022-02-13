@@ -10,6 +10,7 @@ const {
   sellNFT,
   getContractAddress,
   buyNFT,
+  cancleNFT,
 } = require("../blockchain");
 const moment = require("moment");
 router.post("/create-info-nft", async (req, res) => {
@@ -36,14 +37,76 @@ router.get("/info-nft", async (req, res) => {
 
 router.post("/buy-nft", async (req, res) => {
   try {
-    const { buyer_address_wallet, seller_address_wallet, tokenID, price } =
-      req.body;
-    await buyNFT(buyer_address_wallet, seller_address_wallet, tokenID, price)
+    const {
+      buyer_address_wallet,
+      seller_address_wallet,
+      indexNFT,
+      price,
+      nft_id,
+    } = req.body;
+    await buyNFT(buyer_address_wallet, seller_address_wallet, indexNFT, price)
       .then(() => {
-        res.json({
-          data: "buy nft successfully",
-          status: "success",
-        });
+        Owner_nft.updateMany(
+          { nft_id: nft_id },
+          {
+            $set: {
+              status: "not_plant",
+              price: 0,
+            },
+          },
+          (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              Owner_nft.findOne({ nft_id: nft_id }, (err, dataFromOwner) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  User.findOne(
+                    { address_wallet: seller_address_wallet },
+                    (err, dataFromSellerAddress) => {
+                      if (err) {
+                        console.log(err);
+                      } else {
+                        dataFromSellerAddress.listNFT.pull({
+                          _id: dataFromOwner._id,
+                        });
+                        dataFromSellerAddress.save((err) => {
+                          if (err) {
+                            console.log(err);
+                          } else {
+                            User.findOne(
+                              { address_wallet: buyer_address_wallet },
+                              (err, dataFromBuyerAddress) => {
+                                if (err) {
+                                  console.log(err);
+                                } else {
+                                  dataFromBuyerAddress.listNFT.push(
+                                    dataFromOwner
+                                  );
+                                  dataFromBuyerAddress.save((err) => {
+                                    if (err) {
+                                      console.log(err);
+                                    } else {
+                                      res.json({
+                                        data: "buy nft successfully",
+                                        status: "success",
+                                      });
+                                    }
+                                  });
+                                }
+                              }
+                            );
+                          }
+                        });
+                      }
+                    }
+                  );
+                }
+              });
+            }
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -55,8 +118,8 @@ router.post("/buy-nft", async (req, res) => {
 
 router.post("/sell-nft", async (req, res) => {
   try {
-    const { address_wallet, tokenID, price, nft_id } = req.body;
-    await sellNFT(address_wallet, tokenID, price)
+    const { address_wallet, indexNFT, price, nft_id } = req.body;
+    await sellNFT(address_wallet, indexNFT, price)
       .then(() => {
         Owner_nft.updateMany(
           { nft_id: nft_id },
@@ -72,6 +135,39 @@ router.post("/sell-nft", async (req, res) => {
             } else {
               res.json({
                 data: "sell nft successfully",
+                status: "success",
+              });
+            }
+          }
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/cancle-nft", async (req, res) => {
+  try {
+    const { address_wallet, indexNFT, nft_id } = req.body;
+    await cancleNFT(address_wallet, indexNFT)
+      .then(() => {
+        Owner_nft.updateMany(
+          { nft_id: nft_id },
+          {
+            $set: {
+              status: "not-plant",
+              price: 0,
+            },
+          },
+          (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.json({
+                data: "cancle nft successfully",
                 status: "success",
               });
             }
@@ -375,6 +471,7 @@ router.post("/craft-nft", async (req, res) => {
                       energy_consumed,
                       amount_food,
                       status: "not_plant",
+                      price: 0,
                     });
                     await owner_nft.save(async (err, data) => {
                       if (err) {
@@ -477,7 +574,7 @@ router.get("/get-nft-martketplace/:address_wallet", async (req, res) => {
   }
 });
 
-router.get("/get-owner-nft-martketplace/:address_wallet", async (req, res) => {
+router.get("/get-my-sell-nft/:address_wallet", async (req, res) => {
   try {
     const { address_wallet } = req.params;
     const contractAddress = await getContractAddress();
@@ -564,7 +661,7 @@ router.get("/game/get-owner-nft/:address", async (req, res) => {
               status: "success",
             });
           } else {
-            result.listNFT.map((dataFromDB, indexFromDB) => {
+            result.listNFT.map((dataFromDB) => {
               if (dataFromDB.status !== "on-marketplace") {
                 if (
                   dataFromDB.timeFeed &&
