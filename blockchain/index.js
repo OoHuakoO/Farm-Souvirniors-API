@@ -5,14 +5,14 @@ const TruffleContract = require("@truffle/contract");
 const HDWallet = require("@truffle/hdwallet-provider");
 let NFT;
 // Development
-const web3 = new Web3("http://127.0.0.1:7545");
+// const web3 = new Web3("http://127.0.0.1:7545");
 // Testnet Ropsten
-// const web3 = new Web3(
-//   new HDWallet(
-//     "pen luxury three helmet switch crime music thunder casual move owner dolphin",
-//     "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
-//   )
-// );
+const web3 = new Web3(
+  new HDWallet(
+    "pen luxury three helmet switch crime music thunder casual move owner dolphin",
+    "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
+  )
+);
 // Testnet BSC
 // const web3 = new Web3(
 //   new HDWallet(
