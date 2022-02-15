@@ -1,7 +1,10 @@
 const express = require("express"),
   cors = require("cors");
 userRoutes = require("./routes/user");
-nftRoutes = require("./routes/nft");
+ownerNFTRoutes = require("./routes/owner-nft");
+inGameRoutes = require("./routes/in-game");
+marketplaceRoutes = require("./routes/marketplace");
+randomBoxRoutes = require("./routes/random-box");
 mongoose = require("mongoose");
 const app = express();
 
@@ -13,6 +16,9 @@ mongoose.connect(
   { useNewUrlParser: true }
 );
 app.use("/user", userRoutes);
-app.use("/nft", nftRoutes);
+app.use("/in-game", inGameRoutes);
+app.use("/owner-nft", ownerNFTRoutes);
+app.use("/marketplace", marketplaceRoutes);
+app.use("/random-box", randomBoxRoutes);
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`server is running on port ${PORT}`));

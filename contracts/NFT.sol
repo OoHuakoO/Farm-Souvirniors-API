@@ -8,7 +8,7 @@ contract NFT {
         string picture;
         uint16 reward;
         string type_nft;
-        uint16 price;
+        string price;
         uint16 cost_wood;
         uint16 cost_fruit;
         uint16 energy_consumed;
@@ -37,7 +37,7 @@ contract NFT {
                 _picture,
                 _reward,
                 _type_nft,
-                0,
+                '0',
                 _cost_wood,
                 _cost_fruit,
                 _energy_consumed,
@@ -66,7 +66,7 @@ contract NFT {
         return result;
     }
 
-    function sellNFT(uint256 _indexNFT, uint16 _price) public {
+    function sellNFT(uint256 _indexNFT, string memory _price) public {
         info_nft storage myNFT = nft[_indexNFT];
         myNFT.price = _price;
         myNFT.seller = msg.sender;
@@ -77,7 +77,7 @@ contract NFT {
 
     function buyNFT(
         uint256 _indexNFT,
-        uint16 _price,
+        string memory _price,
         address seller
     ) public payable {
         payable(seller).transfer(msg.value);
@@ -91,7 +91,7 @@ contract NFT {
 
     function cancleNFT(uint256 _indexNFT) public {
         info_nft storage myNFT = nft[_indexNFT];
-        myNFT.price = 0;
+        myNFT.price = '0';
         myNFT.seller = address(0);
         ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] + 1;
         ownerNFTCount[address(this)] = ownerNFTCount[address(this)] - 1;
