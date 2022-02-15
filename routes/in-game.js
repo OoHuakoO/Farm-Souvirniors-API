@@ -3,19 +3,10 @@ const Info_nft = require("../models/info_nft");
 const Owner_nft = require("../models/ownerNFT");
 const User = require("../models/user");
 const router = express.Router();
-const { craftNFT, getDetailNFT, getOwnerNft } = require("../blockchain");
+const {
+  craftNFT,
+} = require("../blockchain");
 const moment = require("moment");
-router.post("/create-info-nft", async (req, res) => {
-  const payload = req.body;
-  const info_nft = new Info_nft(payload);
-  await info_nft.save((err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json({ data: data, status: "success" });
-    }
-  });
-});
 
 router.get("/info-nft", async (req, res) => {
   Info_nft.find({}, (err, data) => {
@@ -302,11 +293,11 @@ router.post("/craft-nft", async (req, res) => {
                   cost.wood,
                   cost.fruit,
                   energy_consumed,
-                  amount_food
+                  amount_food,
+                  address_wallet
                 )
                   .then(async () => {
                     const owner_nft = new Owner_nft({
-                      address_wallet: address_wallet,
                       nft_id: pid,
                       name,
                       picture,
@@ -316,6 +307,7 @@ router.post("/craft-nft", async (req, res) => {
                       energy_consumed,
                       amount_food,
                       status: "not_plant",
+                      price: 0,
                     });
                     await owner_nft.save(async (err, data) => {
                       if (err) {
@@ -376,155 +368,113 @@ router.post("/craft-nft", async (req, res) => {
   }
 });
 
-router.get("/get-detail-nft/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const response = await getDetailNFT(id);
-    return res.json({
-      data: response.data,
-      status: "success",
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-router.get("/webhook/get-owner-nft/:address", async (req, res) => {
-  try {
-    const address = req.params.address;
-    const response = await getOwnerNft(address);
-    User.findOne({ address_wallet: address })
-      .populate("listNFT")
-      .exec(async (error, result) => {
-        if (error) {
-          console.log(error);
-        } else {
-          await response.map(
-            async (dataFromSmartContract, indexFromSmartContract) => {
-              await result.listNFT.map((dataFromDB, indexFromDB) => {
-                if (dataFromSmartContract.id === dataFromDB.nft_id) {
-                  dataFromSmartContract.status = dataFromDB.status;
-                  dataFromSmartContract.timeFeed = dataFromDB.timeFeed;
-                }
-                if (
-                  response.length - 1 === indexFromSmartContract &&
-                  result.listNFT.length - 1 === indexFromDB
-                ) {
-                  return res.json({
-                    data: response,
-                    status: "success",
-                  });
-                }
-              });
-            }
-          );
-        }
-      });
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-router.get("/game/get-owner-nft/:address", async (req, res) => {
-  try {
-    const address = req.params.address;
-    const newListNFT = [];
-    await User.findOne({ address_wallet: address })
-      .populate("listNFT")
-      .exec(async (error, result) => {
-        if (error) {
-          console.log(error);
-        } else {
-          result.listNFT.map((dataFromDB, indexFromDB) => {
-            if (
-              dataFromDB.timeFeed &&
-              moment(dataFromDB.timeFeed).format() > moment().format()
-            ) {
-              newListNFT.push({
-                nft_id: dataFromDB.nft_id,
-                name: dataFromDB.name,
-                picture: dataFromDB.picture,
-                type: dataFromDB.type,
-                status: dataFromDB.status,
-                cooldownFeedTime: moment
-                  .utc(
-                    moment
-                      .duration(
-                        moment(dataFromDB.timeFeed).diff(Date.now()),
-                        "m"
-                      )
-                      .asMinutes()
-                  )
-                  .format("mm:ss"),
-              });
-            } else if (
-              dataFromDB.timeHarvest &&
-              !dataFromDB.timeFeed &&
-              moment(dataFromDB.timeHarvest).format() > moment().format()
-            ) {
-              newListNFT.push({
-                nft_id: dataFromDB.nft_id,
-                name: dataFromDB.name,
-                picture: dataFromDB.picture,
-                type: dataFromDB.type,
-                status: dataFromDB.status,
-                cooldownHarvestTime: moment
-                  .utc(
-                    moment
-                      .duration(
-                        moment(dataFromDB.timeHarvest).diff(Date.now()),
-                        "m"
-                      )
-                      .asMinutes()
-                  )
-                  .format("mm:ss"),
-              });
-            } else if (
-              dataFromDB.timeHarvest &&
-              !dataFromDB.timeFeed &&
-              moment(dataFromDB.timeHarvest).format() < moment().format()
-            ) {
-              newListNFT.push({
-                nft_id: dataFromDB.nft_id,
-                name: dataFromDB.name,
-                picture: dataFromDB.picture,
-                type: dataFromDB.type,
-                status: dataFromDB.status,
-                cooldownHarvestTime: "00.00",
-              });
-            } else if (
-              dataFromDB.timeFeed &&
-              moment(dataFromDB.timeFeed).format() < moment().format()
-            ) {
-              newListNFT.push({
-                nft_id: dataFromDB.nft_id,
-                name: dataFromDB.name,
-                picture: dataFromDB.picture,
-                type: dataFromDB.type,
-                status: dataFromDB.status,
-                cooldownFeedTime: "00.00",
+router.get("/get-owner-nft/:address", async (req, res) => {
+    try {
+      const address = req.params.address;
+      const newListNFT = [];
+      await User.findOne({ address_wallet: address })
+        .populate("listNFT")
+        .exec(async (error, result) => {
+          if (error) {
+            console.log(error);
+          } else {
+            if (result.listNFT.length === 0) {
+              return res.json({
+                data: [],
+                status: "success",
               });
             } else {
-              newListNFT.push({
-                nft_id: dataFromDB.nft_id,
-                name: dataFromDB.name,
-                picture: dataFromDB.picture,
-                type: dataFromDB.type,
-                status: dataFromDB.status,
+              result.listNFT.map((dataFromDB) => {
+                if (dataFromDB.status !== "on-marketplace") {
+                  if (
+                    dataFromDB.timeFeed &&
+                    moment(dataFromDB.timeFeed).format() > moment().format()
+                  ) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      cooldownFeedTime: moment
+                        .utc(
+                          moment
+                            .duration(
+                              moment(dataFromDB.timeFeed).diff(Date.now()),
+                              "m"
+                            )
+                            .asMinutes()
+                        )
+                        .format("mm:ss"),
+                    });
+                  } else if (
+                    dataFromDB.timeHarvest &&
+                    !dataFromDB.timeFeed &&
+                    moment(dataFromDB.timeHarvest).format() > moment().format()
+                  ) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      cooldownHarvestTime: moment
+                        .utc(
+                          moment
+                            .duration(
+                              moment(dataFromDB.timeHarvest).diff(Date.now()),
+                              "m"
+                            )
+                            .asMinutes()
+                        )
+                        .format("mm:ss"),
+                    });
+                  } else if (
+                    dataFromDB.timeHarvest &&
+                    !dataFromDB.timeFeed &&
+                    moment(dataFromDB.timeHarvest).format() < moment().format()
+                  ) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      cooldownHarvestTime: "00.00",
+                    });
+                  } else if (
+                    dataFromDB.timeFeed &&
+                    moment(dataFromDB.timeFeed).format() < moment().format()
+                  ) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      cooldownFeedTime: "00.00",
+                    });
+                  } else {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                    });
+                  }
+                }
               });
-            }
-            if (result.listNFT.length - 1 === indexFromDB) {
               return res.json({
                 data: newListNFT,
                 status: "success",
               });
             }
-          });
-        }
-      });
-  } catch (err) {
-    console.log(err);
-  }
-});
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
 module.exports = router;
