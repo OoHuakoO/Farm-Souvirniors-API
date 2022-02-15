@@ -3,7 +3,6 @@ const Info_nft = require("../models/info_nft");
 const Owner_nft = require("../models/ownerNFT");
 const User = require("../models/user");
 const router = express.Router();
-const { craftNFT } = require("../blockchain");
 const moment = require("moment");
 
 router.get("/info-nft", async (req, res) => {
