@@ -178,9 +178,9 @@ const mintRandomBox = async (
     });
   return { status: "success" };
 };
-const getRandomBox = async (pid) => {
+const getRandomBox = async () => {
   const { name, nft_id, price, count, picture } = await RandomBox.methods
-    .box(pid)
+    .box()
     .call();
   return {
     data: {
