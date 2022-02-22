@@ -4,15 +4,16 @@ const Web3 = require("web3");
 const TruffleContract = require("@truffle/contract");
 const HDWallet = require("@truffle/hdwallet-provider");
 let NFT;
+let RandomBox;
 // Development
-const web3 = new Web3("http://127.0.0.1:7545");
+// const web3 = new Web3("http://127.0.0.1:7545");
 // Testnet Ropsten
-// const web3 = new Web3(
-//   new HDWallet(
-//     "pen luxury three helmet switch crime music thunder casual move owner dolphin",
-//     "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
-//   )
-// );
+const web3 = new Web3(
+  new HDWallet(
+    "pen luxury three helmet switch crime music thunder casual move owner dolphin",
+    "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
+  )
+);
 // Testnet BSC
 // const web3 = new Web3(
 //   new HDWallet(
@@ -37,13 +38,22 @@ const web3 = new Web3("http://127.0.0.1:7545");
 // });
 
 const createContractInstance = async () => {
-  const artifact = JSON.parse(
+  const artifactNFT = JSON.parse(
     fs.readFileSync(path.join(__dirname, "../build/contracts", "NFT.json"))
+  );
+  const artifactRandomBox = JSON.parse(
+    fs.readFileSync(
+      path.join(__dirname, "../build/contracts", "RandomBox.json")
+    )
   );
   const netId = await web3.eth.net.getId();
   const deployNetwork = artifact.networks[netId];
   NFT = new web3.eth.Contract(
-    artifact.abi,
+    artifactNFT.abi,
+    deployNetwork && deployNetwork.address
+  );
+  RandomBox = new web3.eth.Contract(
+    artifactRandomBox.abi,
     deployNetwork && deployNetwork.address
   );
 };
@@ -140,8 +150,7 @@ const buyNFT = async (
   indexNFT,
   price
 ) => {
-  
-  await NFT.methods.buyNFT(indexNFT, price,seller_address_wallet).send({
+  await NFT.methods.buyNFT(indexNFT, price, seller_address_wallet).send({
     from: buyer_address_wallet,
     gas: 3000000,
     value: web3.utils.toWei(price, "ether"),
@@ -152,6 +161,38 @@ const buyNFT = async (
 const getContractAddress = async () => {
   return NFT._address;
 };
+
+const mintRandomBox = async (
+  address_wallet,
+  name,
+  nft_id,
+  price,
+  count,
+  picture
+) => {
+  await RandomBox.methods
+    ._mintRandomBox(nft_id, name, price, count, picture)
+    .send({
+      from: address_wallet,
+      gas: 3000000,
+    });
+  return { status: "success" };
+};
+const getRandomBox = async (pid) => {
+  const { name, nft_id, price, count, picture } = await RandomBox.methods
+    .box(pid)
+    .call();
+  return {
+    data: {
+      nft_id: nft_id.toString(),
+      name: name.toString(),
+      picture: picture.toString(),
+      count: count.toString(),
+      type_nft: type_nft.toString(),
+      price: price.toString(),
+    },
+  };
+};
 module.exports = {
   craftNFT,
   getDetailNFT,
@@ -160,4 +201,6 @@ module.exports = {
   buyNFT,
   getContractAddress,
   cancleNFT,
+  mintRandomBox,
+  getRandomBox
 };
