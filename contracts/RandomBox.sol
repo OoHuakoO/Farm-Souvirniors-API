@@ -78,7 +78,7 @@ contract RandomBox {
         payable(owner).transfer(msg.value);
     }
 
-    function _getOnwerRandomBox(address _owner)
+    function _getOwnerRandomBox(address _owner)
         public
         view
         returns (uint256[] memory)
@@ -93,6 +93,7 @@ contract RandomBox {
         }
         return result;
     }
+    
     // function _sellOnwerRandomBox(
     //     uint256 _nft_id,
     //     uint256 _indexRandomBox,
