@@ -15,8 +15,8 @@ contract NFT {
         uint16 amount_food;
         address seller;
     }
-    mapping(uint256 => address) public ownerNft;
-    mapping(address => uint256) public ownerNFTCount;
+    mapping(uint256 => address) internal ownerNft;
+    mapping(address => uint256) internal ownerNFTCount;
     info_nft[] public nft;
 
     function _craftNFT(
