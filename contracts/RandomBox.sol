@@ -26,6 +26,9 @@ contract RandomBox {
     mapping(address => uint256) public ownerRandomBoxCount;
     info_randomBox[] public box;
     info_owner_randomBox[] public owner_box;
+    modifier is_user() {
+        if (msg.sender != owner) _;
+    }
 
     function _mintRandomBox(
         string memory _name,
@@ -65,7 +68,7 @@ contract RandomBox {
         uint256 _indexRandomBox,
         string memory _name,
         string memory _picture
-    ) public payable {
+    ) public payable is_user {
         owner_box.push(info_owner_randomBox(_nft_id, _name, _picture, "chest"));
         uint256 id = owner_box.length - 1;
         ownerRandomBox[id] = msg.sender;
