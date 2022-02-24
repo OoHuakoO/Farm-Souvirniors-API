@@ -6,14 +6,14 @@ const HDWallet = require("@truffle/hdwallet-provider");
 let NFT;
 let RandomBox;
 // Development
-// const web3 = new Web3("http://127.0.0.1:7545");
+const web3 = new Web3("http://127.0.0.1:7545");
 // Testnet Ropsten
-const web3 = new Web3(
-  new HDWallet(
-    "pen luxury three helmet switch crime music thunder casual move owner dolphin",
-    "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
-  )
-);
+// const web3 = new Web3(
+//   new HDWallet(
+//     "pen luxury three helmet switch crime music thunder casual move owner dolphin",
+//     "https://ropsten.infura.io/v3/b0f95459c5a149cc9032a56d32fd1bdf"
+//   )
+// );
 // Testnet BSC
 // const web3 = new Web3(
 //   new HDWallet(
@@ -38,23 +38,24 @@ const web3 = new Web3(
 // });
 
 const createContractInstance = async () => {
-  const artifactNFT = JSON.parse(
+  const artifactNFT = await JSON.parse(
     fs.readFileSync(path.join(__dirname, "../build/contracts", "NFT.json"))
   );
-  const artifactRandomBox = JSON.parse(
+  const artifactRandomBox = await JSON.parse(
     fs.readFileSync(
       path.join(__dirname, "../build/contracts", "RandomBox.json")
     )
   );
   const netId = await web3.eth.net.getId();
-  const deployNetwork = artifact.networks[netId];
+  const deployNetworkNFT = await artifactNFT.networks[netId];
+  const deployNetworkRandomBox = await artifactRandomBox.networks[netId];
   NFT = new web3.eth.Contract(
     artifactNFT.abi,
-    deployNetwork && deployNetwork.address
+    deployNetworkNFT && deployNetworkNFT.address
   );
   RandomBox = new web3.eth.Contract(
     artifactRandomBox.abi,
-    deployNetwork && deployNetwork.address
+    deployNetworkRandomBox && deployNetworkRandomBox.address
   );
 };
 createContractInstance();
@@ -162,36 +163,45 @@ const getContractAddress = async () => {
   return NFT._address;
 };
 
-const mintRandomBox = async (
-  address_wallet,
-  name,
-  nft_id,
-  price,
-  count,
-  picture
-) => {
-  await RandomBox.methods
-    ._mintRandomBox(nft_id, name, price, count, picture)
-    .send({
-      from: address_wallet,
-      gas: 3000000,
-    });
+const mintRandomBox = async (address_wallet, name, price, count, picture) => {
+  await RandomBox.methods._mintRandomBox(name, price, count, picture).send({
+    from: address_wallet,
+    gas: 3000000,
+  });
   return { status: "success" };
 };
-const getRandomBox = async () => {
-  const { name, nft_id, price, count, picture } = await RandomBox.methods
-    .box()
+
+const getDetailRandomBox = async (pid) => {
+  const { name, price, count, picture } = await RandomBox.methods
+    .box(pid)
     .call();
   return {
     data: {
-      nft_id: nft_id.toString(),
       name: name.toString(),
       picture: picture.toString(),
       count: count.toString(),
-      type_nft: type_nft.toString(),
       price: price.toString(),
     },
   };
+};
+const getRandomBox = async () => {
+  let jsonRandomBox = [];
+  const listRandombox = await RandomBox.methods._getRandomBox().call();
+  for (const [index, id] of listRandombox.entries()) {
+    await getDetailRandomBox(id.toString()).then((data) => {
+      jsonRandomBox.push({ ...data.data, indexNFT: id.toString() });
+    });
+    if (index === listRandombox.length - 1) {
+      return jsonRandomBox;
+    }
+  }
+};
+const addCountRandomBox = async (indexNFT, count, address_wallet) => {
+  await RandomBox.methods._addCountRandomBox(indexNFT, count).send({
+    from: address_wallet,
+    gas: 3000000,
+  });
+  return { status: "success" };
 };
 module.exports = {
   craftNFT,
@@ -202,5 +212,6 @@ module.exports = {
   getContractAddress,
   cancleNFT,
   mintRandomBox,
-  getRandomBox
+  getRandomBox,
+  addCountRandomBox,
 };

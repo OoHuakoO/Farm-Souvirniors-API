@@ -4,9 +4,8 @@ pragma solidity >=0.4.22 <0.9.0;
 contract RandomBox {
     address public owner;
     struct info_randomBox {
-        uint256 nft_id;
         string name;
-        uint256 price;
+        string price;
         uint16 count;
         string picture;
     }
@@ -20,14 +19,13 @@ contract RandomBox {
     info_randomBox[] public box;
 
     function _mintRandomBox(
-        uint256 _nft_id,
         string memory _name,
-        uint256 _price,
+        string memory _price,
         uint8 _count,
         string memory _picture
     ) public {
         require(msg.sender == owner);
-        box.push(info_randomBox(_nft_id, _name, _price, _count,_picture));
+        box.push(info_randomBox(_name, _price, _count, _picture));
         uint256 id = box.length - 1;
         randomBoxToContractAddress[id] = address(this);
         ContractAddressRandomBoxCount[address(this)] =
@@ -35,11 +33,21 @@ contract RandomBox {
             1;
     }
 
-    function _updateCountRandomBox(uint256 _indexRandomBox, uint16 count)
-        public
-    {
+    function _addCountRandomBox(uint256 _indexRandomBox, uint16 count) public {
         require(msg.sender == owner);
         info_randomBox storage randomBox = box[_indexRandomBox];
         randomBox.count = randomBox.count + count;
+    }
+
+    function _getRandomBox() public view returns (uint256[] memory) {
+        uint256[] memory result = new uint256[](
+            ContractAddressRandomBoxCount[address(this)]
+        );
+        uint256 counter = 0;
+        for (uint256 i = 0; i < box.length; i++) {
+            result[counter] = i;
+            counter++;
+        }
+        return result;
     }
 }
