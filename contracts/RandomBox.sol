@@ -19,7 +19,7 @@ contract RandomBox is NFT {
         address indexed _to,
         string name,
         string picture,
-        uint256 id
+        uint256 indexNFT
     );
     mapping(uint256 => address) public randomBoxToContractAddress;
     mapping(address => uint256) public ContractAddressRandomBoxCount;
