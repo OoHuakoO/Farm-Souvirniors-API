@@ -15,6 +15,30 @@ contract NFT {
         uint16 amount_food;
         address seller;
     }
+
+    event CraftNFT(
+        address indexed to,
+        uint256 nft_id,
+        uint256 indexNFT,
+        string name,
+        string picture,
+        uint16 reward,
+        string type_nft,
+        string price,
+        uint16 cost_wood,
+        uint16 cost_fruit,
+        uint16 energy_consumed,
+        uint16 amount_food,
+        address seller
+    );
+    event BuyNFT(
+        address indexed from,
+        address indexed to,
+        uint256 indexNFT,
+        string price
+    );
+    event SellNFT(address indexed from, string price, uint256 indexNFT);
+    event CancleNFT(address indexed from, uint256 indexNFT);
     mapping(uint256 => address) internal ownerNft;
     mapping(address => uint256) internal ownerNFTCount;
     info_nft[] public nft;
@@ -29,7 +53,7 @@ contract NFT {
         uint16 _cost_fruit,
         uint16 _energy_consumed,
         uint16 _amount_food
-    ) public {
+    ) internal {
         nft.push(
             info_nft(
                 _nft_id,
@@ -37,7 +61,7 @@ contract NFT {
                 _picture,
                 _reward,
                 _type_nft,
-                '0',
+                "0",
                 _cost_wood,
                 _cost_fruit,
                 _energy_consumed,
@@ -48,6 +72,21 @@ contract NFT {
         uint256 id = nft.length - 1;
         ownerNft[id] = msg.sender;
         ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] + 1;
+        emit CraftNFT(
+            msg.sender,
+            _nft_id,
+            id,
+            _name,
+            _picture,
+            _reward,
+            _type_nft,
+            "0",
+            _cost_wood,
+            _cost_fruit,
+            _energy_consumed,
+            _amount_food,
+            address(0)
+        );
     }
 
     function getNFTByOwner(address _owner)
@@ -73,6 +112,7 @@ contract NFT {
         ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] - 1;
         ownerNFTCount[address(this)] = ownerNFTCount[address(this)] + 1;
         ownerNft[_indexNFT] = address(this);
+        emit SellNFT(msg.sender, _price, _indexNFT);
     }
 
     function buyNFT(
@@ -87,14 +127,16 @@ contract NFT {
         ownerNFTCount[address(this)] = ownerNFTCount[address(this)] - 1;
         ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] + 1;
         ownerNft[_indexNFT] = msg.sender;
+        emit BuyNFT(seller, msg.sender, _indexNFT, _price);
     }
 
     function cancleNFT(uint256 _indexNFT) public {
         info_nft storage myNFT = nft[_indexNFT];
-        myNFT.price = '0';
+        myNFT.price = "0";
         myNFT.seller = address(0);
         ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] + 1;
         ownerNFTCount[address(this)] = ownerNFTCount[address(this)] - 1;
         ownerNft[_indexNFT] = msg.sender;
+        emit CancleNFT(msg.sender, _indexNFT);
     }
 }

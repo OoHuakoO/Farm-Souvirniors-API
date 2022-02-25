@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
+import "./NFT.sol";
 
-contract RandomBox {
+contract RandomBox is NFT {
     address public owner;
     struct info_randomBox {
         string name;
@@ -9,23 +10,21 @@ contract RandomBox {
         uint16 count;
         string picture;
     }
-    struct info_owner_randomBox {
-        uint256 nft_id;
-        string name;
-        string picture;
-        string type_nft;
-    }
 
     constructor() {
         owner = msg.sender;
     }
 
+    event BuyRandomBox(
+        address indexed _to,
+        string name,
+        string picture,
+        uint256 id
+    );
     mapping(uint256 => address) public randomBoxToContractAddress;
     mapping(address => uint256) public ContractAddressRandomBoxCount;
-    mapping(uint256 => address) public ownerRandomBox;
-    mapping(address => uint256) public ownerRandomBoxCount;
     info_randomBox[] public box;
-    info_owner_randomBox[] public owner_box;
+
     modifier is_user() {
         if (msg.sender != owner) _;
     }
@@ -69,45 +68,13 @@ contract RandomBox {
         string memory _name,
         string memory _picture
     ) public payable is_user {
-        owner_box.push(info_owner_randomBox(_nft_id, _name, _picture, "chest"));
-        uint256 id = owner_box.length - 1;
-        ownerRandomBox[id] = msg.sender;
-        ownerRandomBoxCount[msg.sender] = ownerRandomBoxCount[msg.sender] + 1;
+        _craftNFT(_nft_id, _name, _picture, 0, "chest", 0, 0, 0, 0);
+        uint256 id = nft.length - 1;
+        ownerNft[id] = msg.sender;
+        ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] + 1;
         info_randomBox storage randomBox = box[_indexRandomBox];
         randomBox.count = randomBox.count - 1;
         payable(owner).transfer(msg.value);
+        emit BuyRandomBox(msg.sender, _name, _picture, id);
     }
-
-    function _getOwnerRandomBox(address _owner)
-        public
-        view
-        returns (uint256[] memory)
-    {
-        uint256[] memory result = new uint256[](ownerRandomBoxCount[_owner]);
-        uint256 counter = 0;
-        for (uint256 i = 0; i < owner_box.length; i++) {
-            if (ownerRandomBox[i] == _owner) {
-                result[counter] = i;
-                counter++;
-            }
-        }
-        return result;
-    }
-    
-    // function _sellOnwerRandomBox(
-    //     uint256 _nft_id,
-    //     uint256 _indexRandomBox,
-    //     string memory _name,
-    //     string memory _picture
-    // ) public payable {
-    //     onwer_box.push(
-    //         info_owner_randomBox(_nft_id, _name, _picture, address(0))
-    //     );
-    //     uint256 id = onwer_box.length - 1;
-    //     ownerRandomBox[id] = msg.sender;
-    //     ownerRandomBoxCount[msg.sender] = ownerRandomBoxCount[msg.sender] + 1;
-    //     info_randomBox storage randomBox = box[_indexRandomBox];
-    //     randomBox.count = randomBox.count - 1;
-    //     payable(owner).transfer(msg.value);
-    // }
 }
