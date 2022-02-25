@@ -3,7 +3,7 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./NFT.sol";
 
 contract RandomBox is NFT {
-    address public owner;
+    address private owner;
     struct info_randomBox {
         string name;
         string price;
@@ -21,6 +21,7 @@ contract RandomBox is NFT {
         string picture,
         uint256 indexNFT
     );
+    event OpenRandomBox(address indexed from, uint256 indexNFT);
     mapping(uint256 => address) public randomBoxToContractAddress;
     mapping(address => uint256) public ContractAddressRandomBoxCount;
     info_randomBox[] public box;
@@ -76,5 +77,32 @@ contract RandomBox is NFT {
         randomBox.count = randomBox.count - 1;
         payable(owner).transfer(msg.value);
         emit BuyRandomBox(msg.sender, _name, _picture, id);
+    }
+
+    function _openRandomBox(
+        uint256 _nft_id,
+        string memory _name,
+        string memory _picture,
+        uint16 _reward,
+        string memory _type_nft,
+        uint16 _cost_wood,
+        uint16 _cost_fruit,
+        uint16 _energy_consumed,
+        uint16 _amount_food,
+        uint256 _indexRandomBox
+    ) public is_user {
+        ownerNft[_indexRandomBox] = 0x000000000000000000000000000000000000dEaD;
+        ownerNFTCount[msg.sender] = ownerNFTCount[msg.sender] - 1;
+        _craftNFT(
+            _nft_id,
+            _name,
+            _picture,
+            _reward,
+            _type_nft,
+            _cost_wood,
+            _cost_fruit,
+            _energy_consumed,
+            _amount_food
+        );
     }
 }
