@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "3172cb59-a696-48da-960d-d0dcf07d8197",
-		"name": "Farm-souvirniors",
+		"_postman_id": "75852f5a-433c-43e6-af1c-272e58a4ea37",
+		"name": "Farm-souvirniors-prod",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"nft_id\": \"1644303448578\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645151852080\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -32,62 +32,6 @@
 							"path": [
 								"in-game",
 								"harvest-nft"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create-info-nft",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\" : \"apple\",\n    \"picture\" : \"https://res.cloudinary.com/smilejob/image/upload/v1644302034/Farm-Souvirniors/Apple_tpsbss.png\",\n    \"reward\" : 5,\n    \"type\" : \"fruit\",\n    \"price\" : 5,\n     \"cost\" : {\n         \"wood\" : 10,\n         \"fruit\" : 10\n     },\n     \"energy_consumed\" : 5,\n     \"amount_food\" : 5\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8000/in-game/create-info-nft",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"in-game",
-								"create-info-nft"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "info-nft",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/in-game/info-nft",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"in-game",
-								"info-nft"
 							]
 						}
 					},
@@ -123,12 +67,21 @@
 					"response": []
 				},
 				{
-					"name": "get-owner-nft",
+					"name": "feed-nft",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176432\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8000/in-game/get-owner-nft/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
+							"raw": "http://localhost:8000/in-game/feed-nft",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -136,8 +89,7 @@
 							"port": "8000",
 							"path": [
 								"in-game",
-								"get-owner-nft",
-								"0x1B7AAdF746c0B06CE987143C3770602e8894FD88"
+								"feed-nft"
 							]
 						}
 					},
@@ -150,7 +102,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"nft_id\": \"1644303448578\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -173,21 +125,12 @@
 					"response": []
 				},
 				{
-					"name": "feed-nft",
+					"name": "get-owner-nft",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"nft_id\": \"1644303448578\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8000/in-game/feed-nft",
+							"raw": "http://localhost:8000/in-game/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -195,7 +138,8 @@
 							"port": "8000",
 							"path": [
 								"in-game",
-								"feed-nft"
+								"get-owner-nft",
+								"0x629812063124cE2448703B889D754b232B3622BA"
 							]
 						}
 					},
@@ -213,7 +157,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"indexNFT\": 0,\n    \"price\": 0.01,\n    \"nft_id\" : \"1644749185846\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n    \"price\": \"0.01\",\n    \"nft_id\" : \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,7 +185,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/marketplace/get-my-sell-nft/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
+							"raw": "http://localhost:8000/marketplace/get-my-sell-nft/0x629812063124cE2448703B889D754b232B3622BA",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -250,7 +194,7 @@
 							"path": [
 								"marketplace",
 								"get-my-sell-nft",
-								"0x1B7AAdF746c0B06CE987143C3770602e8894FD88"
+								"0x629812063124cE2448703B889D754b232B3622BA"
 							]
 						}
 					},
@@ -263,7 +207,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"indexNFT\": 0,\n    \"nft_id\" : \"1644749185846\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n    \"nft_id\" : \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -320,7 +264,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"buyer_address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\",\n    \"seller_address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"indexNFT\": 0,\n     \"nft_id\" : \"1644749185846\",\n    \"price\":  0.01\n}",
+							"raw": "{\n    \"buyer_address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"seller_address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n     \"nft_id\" : \"1644904472596\",\n    \"price\":  \"0.01\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -360,7 +304,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8000/owner-nft/get-owner-nft/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
+							"raw": "http://localhost:8000/owner-nft/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -369,28 +313,7 @@
 							"path": [
 								"owner-nft",
 								"get-owner-nft",
-								"0x1B7AAdF746c0B06CE987143C3770602e8894FD88"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get-detail-nft",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/owner-nft/get-detail-nft/0",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"owner-nft",
-								"get-detail-nft",
-								"0"
+								"0x629812063124cE2448703B889D754b232B3622BA"
 							]
 						}
 					},
@@ -431,14 +354,6 @@
 					"response": []
 				},
 				{
-					"name": "transter-token",
-					"request": {
-						"method": "POST",
-						"header": []
-					},
-					"response": []
-				},
-				{
 					"name": "save-user",
 					"request": {
 						"method": "POST",
@@ -470,12 +385,12 @@
 			]
 		},
 		{
-			"name": "ramdom-box",
+			"name": "random-box",
 			"item": [
 				{
-					"name": "open-random-box-nft",
+					"name": "open-randombox",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": []
 					},
 					"response": []
