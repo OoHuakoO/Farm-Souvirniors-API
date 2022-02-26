@@ -28,6 +28,17 @@ router.post("/save-user", async (req, res) => {
   });
 });
 
+router.get("/get-user/:address_wallet", async (req, res) => {
+  const { address_wallet } = req.params;
+  User.findOne({ address_wallet: address_wallet }, async (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json({ data: result, status: "success" });
+    }
+  });
+});
+
 router.post("/add-energy", async (req, res) => {
   const { address_wallet, meat } = req.body;
   User.findOne({ address_wallet: address_wallet }, async (err, result) => {
