@@ -180,27 +180,6 @@
 					"response": []
 				},
 				{
-					"name": "get-my-sell-nft",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/marketplace/get-my-sell-nft/0x629812063124cE2448703B889D754b232B3622BA",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"marketplace",
-								"get-my-sell-nft",
-								"0x629812063124cE2448703B889D754b232B3622BA"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "cancel-sell-nft",
 					"request": {
 						"method": "POST",
@@ -224,34 +203,6 @@
 							"path": [
 								"marketplace",
 								"cancle-nft"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get-nft-marketplace",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:8000/marketplace/get-nft-martketplace/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"marketplace",
-								"get-nft-martketplace",
-								"0x1B7AAdF746c0B06CE987143C3770602e8894FD88"
 							]
 						}
 					},
@@ -293,16 +244,9 @@
 			"item": [
 				{
 					"name": "get-owner-nft",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:8000/owner-nft/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
 							"protocol": "http",
@@ -388,7 +332,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/user/save-user/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
+							"raw": "http://localhost:8000/user/get-user/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -396,7 +340,7 @@
 							"port": "8000",
 							"path": [
 								"user",
-								"save-user",
+								"get-user",
 								"0x1B7AAdF746c0B06CE987143C3770602e8894FD88"
 							]
 						}
