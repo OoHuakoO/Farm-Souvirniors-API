@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "3172cb59-a696-48da-960d-d0dcf07d8197",
-		"name": "Farm-souvirniors",
+		"name": "Farm-souvirniors-dev",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"nft_id\": \"1644303448578\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645151852080\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -128,7 +128,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/in-game/get-owner-nft/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
+							"raw": "http://localhost:8000/in-game/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -137,7 +137,7 @@
 							"path": [
 								"in-game",
 								"get-owner-nft",
-								"0x1B7AAdF746c0B06CE987143C3770602e8894FD88"
+								"0x629812063124cE2448703B889D754b232B3622BA"
 							]
 						}
 					},
@@ -150,7 +150,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"nft_id\": \"1644303448578\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,7 +179,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"nft_id\": \"1644303448578\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,7 +213,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"indexNFT\": 0,\n    \"price\": 0.01,\n    \"nft_id\" : \"1644749185846\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n    \"price\": \"0.01\",\n    \"nft_id\" : \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,7 +241,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/marketplace/get-my-sell-nft/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
+							"raw": "http://localhost:8000/marketplace/get-my-sell-nft/0x629812063124cE2448703B889D754b232B3622BA",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -250,7 +250,7 @@
 							"path": [
 								"marketplace",
 								"get-my-sell-nft",
-								"0x1B7AAdF746c0B06CE987143C3770602e8894FD88"
+								"0x629812063124cE2448703B889D754b232B3622BA"
 							]
 						}
 					},
@@ -263,7 +263,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"indexNFT\": 0,\n    \"nft_id\" : \"1644749185846\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n    \"nft_id\" : \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -320,7 +320,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"buyer_address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\",\n    \"seller_address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"indexNFT\": 0,\n     \"nft_id\" : \"1644749185846\",\n    \"price\":  0.01\n}",
+							"raw": "{\n    \"buyer_address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"seller_address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n     \"nft_id\" : \"1644904472596\",\n    \"price\":  \"0.01\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -360,7 +360,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8000/owner-nft/get-owner-nft/0x1B7AAdF746c0B06CE987143C3770602e8894FD88",
+							"raw": "http://localhost:8000/owner-nft/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -369,7 +369,7 @@
 							"path": [
 								"owner-nft",
 								"get-owner-nft",
-								"0x1B7AAdF746c0B06CE987143C3770602e8894FD88"
+								"0x629812063124cE2448703B889D754b232B3622BA"
 							]
 						}
 					},
@@ -431,14 +431,6 @@
 					"response": []
 				},
 				{
-					"name": "transter-token",
-					"request": {
-						"method": "POST",
-						"header": []
-					},
-					"response": []
-				},
-				{
 					"name": "save-user",
 					"request": {
 						"method": "POST",
@@ -473,10 +465,125 @@
 			"name": "ramdom-box",
 			"item": [
 				{
-					"name": "open-random-box-nft",
+					"name": "mint-random-box",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"name\" : \"Fruit Chest\",\n    \"price\" : \"0.01\",\n    \"count\" : 100,\n    \"picture\" : \"https://res.cloudinary.com/smilejob/image/upload/v1645697085/Farm-Souvirniors/fruit-chest_mx58t4.png\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/random-box/mint-randombox",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"random-box",
+								"mint-randombox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-random-box",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/random-box/get-randombox",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"random-box",
+								"get-randombox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-count-random-box",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"count\" : 1,\n    \"indexNFT\" : 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/random-box/add-count-random-box",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"random-box",
+								"add-count-random-box"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buy-random-box",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8000/random-box/buy-random-box",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"random-box",
+								"buy-random-box"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-owner-random-box",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/random-box/get-owner-random-box/0x2cDaf60670b02F99381e55B1c183d2aF4F87833c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"random-box",
+								"get-owner-random-box",
+								"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c"
+							]
+						}
 					},
 					"response": []
 				}
