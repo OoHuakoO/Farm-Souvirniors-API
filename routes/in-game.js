@@ -255,6 +255,7 @@ router.post("/plant-nft", async (req, res) => {
 router.post("/craft-nft", async (req, res) => {
   try {
     const {
+      pid,
       name,
       picture,
       reward,
@@ -264,7 +265,6 @@ router.post("/craft-nft", async (req, res) => {
       amount_food,
       address_wallet,
     } = req.body;
-    const pid = Date.now();
     User.findOne({ address_wallet: address_wallet }, async (err, result) => {
       if (
         result.resource.wood < cost.wood ||
