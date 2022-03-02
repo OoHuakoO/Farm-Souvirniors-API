@@ -201,12 +201,15 @@ router.post("/feed-nft", async (req, res) => {
 
 router.post("/plant-nft", async (req, res) => {
   const { address_wallet, nft_id, position_plant } = req.body;
+  console.log(address_wallet,nft_id,position_plant)
   const datePlant = moment().add(1, "minutes");
   Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
+    console.log(data)
     if (err) {
       console.log(err);
     } else {
       User.findOne({ address_wallet: address_wallet }, (err, result) => {
+        console.log(result)
         if (err) {
           console.log(err);
         } else if (result.energy < data.energy_consumed) {
