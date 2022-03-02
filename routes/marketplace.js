@@ -104,7 +104,7 @@ router.post("/cancle-nft", async (req, res) => {
       { nft_id: nft_id },
       {
         $set: {
-          status: "not-plant",
+          status: "not_plant",
           price: 0,
         },
       },
