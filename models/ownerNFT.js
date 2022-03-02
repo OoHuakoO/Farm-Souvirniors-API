@@ -14,5 +14,6 @@ const ownerNFT = new Schema({
   status: String,
   timeFeed: Date,
   timeHarvest: Date,
+  position_plant : Number
 });
 module.exports = mongoose.model("owner_nft", ownerNFT);

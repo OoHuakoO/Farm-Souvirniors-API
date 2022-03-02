@@ -43,6 +43,7 @@ router.post("/harvest-nft", async (req, res) => {
                   timeHarvest: null,
                   status: "not_use",
                   timeFeed: null,
+                  position_plant: null,
                 },
               },
               async (err) => {
@@ -177,7 +178,7 @@ router.post("/feed-nft", async (req, res) => {
                         console.log(err);
                       } else {
                         res.json({
-                          data: "01.00",
+                          data: 0.59,
                           status: "success",
                         });
                       }
@@ -199,7 +200,7 @@ router.post("/feed-nft", async (req, res) => {
 });
 
 router.post("/plant-nft", async (req, res) => {
-  const { address_wallet, nft_id } = req.body;
+  const { address_wallet, nft_id, position_plant } = req.body;
   const datePlant = moment().add(1, "minutes");
   Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
     if (err) {
@@ -219,6 +220,7 @@ router.post("/plant-nft", async (req, res) => {
               $set: {
                 timeFeed: datePlant,
                 status: "wait_feed",
+                position_plant: position_plant,
               },
             },
             async (err) => {
@@ -237,7 +239,7 @@ router.post("/plant-nft", async (req, res) => {
                       console.log(err);
                     } else {
                       res.json({
-                        data: "01.00",
+                        data: 0.59,
                         status: "success",
                       });
                     }
@@ -365,6 +367,7 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                     picture: dataFromDB.picture,
                     type: dataFromDB.type,
                     status: dataFromDB.status,
+                    position_plant: dataFromDB.position_plant,
                     cooldownFeedTime: moment
                       .utc(
                         moment
@@ -387,6 +390,7 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                     picture: dataFromDB.picture,
                     type: dataFromDB.type,
                     status: dataFromDB.status,
+                    position_plant: dataFromDB.position_plant,
                     cooldownHarvestTime: moment
                       .utc(
                         moment
@@ -409,6 +413,7 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                     picture: dataFromDB.picture,
                     type: dataFromDB.type,
                     status: dataFromDB.status,
+                    position_plant: dataFromDB.position_plant,
                     cooldownHarvestTime: "00.00",
                   });
                 } else if (
@@ -421,6 +426,7 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                     picture: dataFromDB.picture,
                     type: dataFromDB.type,
                     status: dataFromDB.status,
+                    position_plant: dataFromDB.position_plant,
                     cooldownFeedTime: "00.00",
                   });
                 } else {
@@ -430,6 +436,7 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                     picture: dataFromDB.picture,
                     type: dataFromDB.type,
                     status: dataFromDB.status,
+                    position_plant: dataFromDB.position_plant,
                   });
                 }
               }
