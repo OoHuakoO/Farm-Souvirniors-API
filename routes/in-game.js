@@ -201,15 +201,15 @@ router.post("/feed-nft", async (req, res) => {
 
 router.post("/plant-nft", async (req, res) => {
   const { address_wallet, nft_id, position_plant } = req.body;
-  console.log(address_wallet,nft_id,position_plant)
+  console.log(address_wallet, nft_id, position_plant);
   const datePlant = moment().add(1, "minutes");
   Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
-    console.log(data)
+    console.log(data);
     if (err) {
       console.log(err);
     } else {
       User.findOne({ address_wallet: address_wallet }, (err, result) => {
-        console.log(result)
+        console.log(result);
         if (err) {
           console.log(err);
         } else if (result.energy < data.energy_consumed) {
@@ -364,83 +364,155 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                   dataFromDB.timeFeed &&
                   moment(dataFromDB.timeFeed).format() > moment().format()
                 ) {
-                  newListNFT.push({
-                    nft_id: dataFromDB.nft_id,
-                    name: dataFromDB.name,
-                    picture: dataFromDB.picture,
-                    type: dataFromDB.type,
-                    status: dataFromDB.status,
-                    position_plant: dataFromDB.position_plant,
-                    cooldownFeedTime: moment
-                      .utc(
-                        moment
-                          .duration(
-                            moment(dataFromDB.timeFeed).diff(Date.now()),
-                            "m"
-                          )
-                          .asMinutes()
-                      )
-                      .format("mm:ss"),
-                  });
+                  if (dataFromDB.position_plant) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      position_plant: dataFromDB.position_plant,
+                      cooldownFeedTime: moment
+                        .utc(
+                          moment
+                            .duration(
+                              moment(dataFromDB.timeFeed).diff(Date.now()),
+                              "m"
+                            )
+                            .asMinutes()
+                        )
+                        .format("mm:ss"),
+                    });
+                  } else {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      cooldownFeedTime: moment
+                        .utc(
+                          moment
+                            .duration(
+                              moment(dataFromDB.timeFeed).diff(Date.now()),
+                              "m"
+                            )
+                            .asMinutes()
+                        )
+                        .format("mm:ss"),
+                    });
+                  }
                 } else if (
                   dataFromDB.timeHarvest &&
                   !dataFromDB.timeFeed &&
                   moment(dataFromDB.timeHarvest).format() > moment().format()
                 ) {
-                  newListNFT.push({
-                    nft_id: dataFromDB.nft_id,
-                    name: dataFromDB.name,
-                    picture: dataFromDB.picture,
-                    type: dataFromDB.type,
-                    status: dataFromDB.status,
-                    position_plant: dataFromDB.position_plant,
-                    cooldownHarvestTime: moment
-                      .utc(
-                        moment
-                          .duration(
-                            moment(dataFromDB.timeHarvest).diff(Date.now()),
-                            "m"
-                          )
-                          .asMinutes()
-                      )
-                      .format("mm:ss"),
-                  });
+                  if (dataFromDB.position_plant) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      position_plant: dataFromDB.position_plant,
+                      cooldownHarvestTime: moment
+                        .utc(
+                          moment
+                            .duration(
+                              moment(dataFromDB.timeHarvest).diff(Date.now()),
+                              "m"
+                            )
+                            .asMinutes()
+                        )
+                        .format("mm:ss"),
+                    });
+                  } else {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      cooldownHarvestTime: moment
+                        .utc(
+                          moment
+                            .duration(
+                              moment(dataFromDB.timeHarvest).diff(Date.now()),
+                              "m"
+                            )
+                            .asMinutes()
+                        )
+                        .format("mm:ss"),
+                    });
+                  }
                 } else if (
                   dataFromDB.timeHarvest &&
                   !dataFromDB.timeFeed &&
                   moment(dataFromDB.timeHarvest).format() < moment().format()
                 ) {
-                  newListNFT.push({
-                    nft_id: dataFromDB.nft_id,
-                    name: dataFromDB.name,
-                    picture: dataFromDB.picture,
-                    type: dataFromDB.type,
-                    status: dataFromDB.status,
-                    position_plant: dataFromDB.position_plant,
-                    cooldownHarvestTime: "00.00",
-                  });
+                  if (dataFromDB.position_plant) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      position_plant: dataFromDB.position_plant,
+                      cooldownHarvestTime: "00.00",
+                    });
+                  } else {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      cooldownHarvestTime: "00.00",
+                    });
+                  }
                 } else if (
                   dataFromDB.timeFeed &&
                   moment(dataFromDB.timeFeed).format() < moment().format()
                 ) {
-                  newListNFT.push({
-                    nft_id: dataFromDB.nft_id,
-                    name: dataFromDB.name,
-                    picture: dataFromDB.picture,
-                    type: dataFromDB.type,
-                    status: dataFromDB.status,
-                    position_plant: dataFromDB.position_plant,
-                    cooldownFeedTime: "00.00",
-                  });
+                  if (dataFromDB.position_plant) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      position_plant: dataFromDB.position_plant,
+                      cooldownFeedTime: "00.00",
+                    });
+                  } else {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      cooldownFeedTime: "00.00",
+                    });
+                  }
                 } else {
-                  newListNFT.push({
-                    nft_id: dataFromDB.nft_id,
-                    name: dataFromDB.name,
-                    picture: dataFromDB.picture,
-                    type: dataFromDB.type,
-                    status: dataFromDB.status,
-                    position_plant: dataFromDB.position_plant,
-                  });
+                  if (dataFromDB.position_plant) {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                      position_plant: dataFromDB.position_plant,
+                    });
+                  } else {
+                    newListNFT.push({
+                      nft_id: dataFromDB.nft_id,
+                      name: dataFromDB.name,
+                      picture: dataFromDB.picture,
+                      type: dataFromDB.type,
+                      status: dataFromDB.status,
+                    });
+                  }
                 }
               }
             });
