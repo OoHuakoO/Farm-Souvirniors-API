@@ -41,7 +41,7 @@ router.post("/harvest-nft", async (req, res) => {
               {
                 $set: {
                   timeHarvest: null,
-                  status: "not_use",
+                  status: "not_plant",
                   timeFeed: null,
                   position_plant: null,
                 },
