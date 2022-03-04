@@ -10,6 +10,7 @@ router.post("/buy-nft", async (req, res) => {
       { nft_id: nft_id },
       {
         $set: {
+          buyer_address_wallet : buyer_address_wallet,
           status: "not_plant",
           price: 0,
         },
