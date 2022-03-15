@@ -257,6 +257,33 @@ router.post("/plant-nft", async (req, res) => {
   });
 });
 
+router.post("/check-resource", async (req, res) => {
+  try {
+    const { cost, address_wallet } = req.body;
+    User.findOne({ address_wallet: address_wallet }, async (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      if (
+        result.resource.wood < cost.wood ||
+        result.resource.fruit < cost.fruit
+      ) {
+        res.json({
+          data: "please add resource",
+          status: "false",
+        });
+      } else {
+        res.json({
+          data: "have enough resource",
+          status: "success",
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 router.post("/craft-nft", async (req, res) => {
   try {
     const {
@@ -270,71 +297,59 @@ router.post("/craft-nft", async (req, res) => {
       amount_food,
       address_wallet,
     } = req.body;
-    User.findOne({ address_wallet: address_wallet }, async (err, result) => {
-      if (
-        result.resource.wood < cost.wood ||
-        result.resource.fruit < cost.fruit
-      ) {
-        res.json({
-          data: "please add resource",
-          status: "false",
-        });
+    const owner_nft = new Owner_nft({
+      address_wallet: address_wallet,
+      nft_id: pid,
+      name,
+      picture,
+      reward,
+      type,
+      cost,
+      energy_consumed,
+      amount_food,
+      status: "not_plant",
+      price: 0,
+    });
+    await owner_nft.save(async (err, data) => {
+      if (err) {
+        console.log(err);
       } else {
-        const owner_nft = new Owner_nft({
-          address_wallet: address_wallet,
-          nft_id: pid,
-          name,
-          picture,
-          reward,
-          type,
-          cost,
-          energy_consumed,
-          amount_food,
-          status: "not_plant",
-          price: 0,
-        });
-        await owner_nft.save(async (err, data) => {
-          if (err) {
-            console.log(err);
-          } else {
-            User.findOne(
-              { address_wallet: address_wallet },
-              async (err, result) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  result.listNFT.push(data);
-                  User.updateMany(
-                    {
-                      address_wallet: address_wallet,
-                    },
-                    {
-                      $set: {
-                        "resource.fruit": result.resource.fruit - cost.fruit,
-                        "resource.wood": result.resource.wood - cost.wood,
-                      },
-                    },
-                    async (err) => {
-                      if (err) {
-                        console.log(err);
-                      } else {
-                        await result.save((err, data) => {
-                          if (err) console.log(err);
-                          else {
-                            res.json({
-                              data: data,
-                              status: "success",
-                            });
-                          }
+        User.findOne(
+          { address_wallet: address_wallet },
+          async (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              result.listNFT.push(data);
+              User.updateMany(
+                {
+                  address_wallet: address_wallet,
+                },
+                {
+                  $set: {
+                    "resource.fruit": result.resource.fruit - cost.fruit,
+                    "resource.wood": result.resource.wood - cost.wood,
+                  },
+                },
+                async (err) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    await result.save((err, data) => {
+                      if (err) console.log(err);
+                      else {
+                        res.json({
+                          data: data,
+                          status: "success",
                         });
                       }
-                    }
-                  );
+                    });
+                  }
                 }
-              }
-            );
+              );
+            }
           }
-        });
+        );
       }
     });
   } catch (err) {
