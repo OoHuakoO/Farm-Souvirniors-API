@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645151852080\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\" : \"duck\",\n    \"picture\" : \"https://res.cloudinary.com/smilejob/image/upload/v1644302011/Farm-Souvirniors/Duck_lly03n.png\",\n    \"reward\" : 5,\n    \"type\" : \"animal\",\n     \"cost\" : {\n         \"wood\" : 10,\n         \"fruit\" : 10\n     },\n     \"energy_consumed\" : 5,\n     \"amount_food\" : 5,\n     \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\"\n}",
+							"raw": "{\n    \"pid\" : \"1645168176452\",\n    \"name\" : \"pig\",\n    \"picture\" : \"https://res.cloudinary.com/smilejob/image/upload/v1644302011/Farm-Souvirniors/Pig_gqadmy.png\",\n    \"reward\" : 5,\n    \"type\" : \"animal\",\n     \"cost\" : {\n         \"wood\" : 10,\n         \"fruit\" : 10\n     },\n     \"energy_consumed\" : 5,\n     \"amount_food\" : 5,\n     \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -52,12 +52,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/in-game/craft-nft",
-							"protocol": "http",
+							"raw": "https://farm-souvirniors-api.herokuapp.com/in-game/craft-nft",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"farm-souvirniors-api",
+								"herokuapp",
+								"com"
 							],
-							"port": "8000",
 							"path": [
 								"in-game",
 								"craft-nft"
@@ -102,7 +103,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176432\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176438\",\n    \"position_plant\" :  10\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -126,20 +127,64 @@
 				},
 				{
 					"name": "get-owner-nft",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "http://localhost:8000/in-game/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
-							"protocol": "http",
+							"raw": "https://farm-souvirniors-api.herokuapp.com/in-game/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"farm-souvirniors-api",
+								"herokuapp",
+								"com"
 							],
-							"port": "8000",
 							"path": [
 								"in-game",
 								"get-owner-nft",
 								"0x629812063124cE2448703B889D754b232B3622BA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check-resource",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cost\" : {\n         \"wood\" : 80,\n         \"fruit\" : 80\n     },\n      \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://farm-souvirniors-api.herokuapp.com/in-game/check-resource",
+							"protocol": "https",
+							"host": [
+								"farm-souvirniors-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"in-game",
+								"check-resource"
 							]
 						}
 					},
@@ -157,7 +202,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n    \"price\": \"0.01\",\n    \"nft_id\" : \"1645168176432\"\n}",
+							"raw": "{\n    \"price\": \"0.01\",\n    \"nft_id\" : \"1645168176432\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,7 +260,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"buyer_address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"seller_address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n     \"nft_id\" : \"1644904472596\",\n    \"price\":  \"0.01\"\n}",
+							"raw": "{\n    \"buyer_address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n    \"seller_address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"indexNFT\": 0,\n     \"nft_id\" : \"1646362087265\",\n    \"price\":  \"0.01\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -355,8 +400,51 @@
 				{
 					"name": "open-randombox",
 					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n     \"pid\" : \"1645168176460\",\n     \"address_wallet\" : \"0x1B7AAdF746c0B06CE987143C3770602e8894FD88\",\n     \"name\" : \"cow\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/randombox/open-randombox",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"randombox",
+								"open-randombox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-one-info-nft",
+					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "https://farm-souvirniors-api.herokuapp.com/randombox/get-one-info-nft/cow",
+							"protocol": "https",
+							"host": [
+								"farm-souvirniors-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"randombox",
+								"get-one-info-nft",
+								"cow"
+							]
+						}
 					},
 					"response": []
 				}
