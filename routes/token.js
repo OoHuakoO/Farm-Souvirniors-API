@@ -69,19 +69,19 @@ router.post("/check-resource", async (req, res) => {
       if (result.resource.fruit >= value) {
         res.json({ data: "can withdraw token", status: "success" });
       } else {
-        res.json({ data: "not enough resource ", status: "false" });
+        res.json({ data: "not enough resource", status: "false" });
       }
     } else if (type === "Wood") {
       if (result.resource.wood >= value) {
         res.json({ data: "can withdraw token", status: "success" });
       } else {
-        res.json({ data: "not enough resource ", status: "false" });
+        res.json({ data: "not enough resource", status: "false" });
       }
     } else {
       if (result.resource.meat >= value) {
         res.json({ data: "can withdraw token", status: "success" });
       } else {
-        res.json({ data: "not enough resource ", status: "false" });
+        res.json({ data: "not enough resource", status: "false" });
       }
     }
   });
