@@ -5,6 +5,7 @@ ownerNFTRoutes = require("./routes/owner-nft");
 inGameRoutes = require("./routes/in-game");
 marketplaceRoutes = require("./routes/marketplace");
 randomBoxRoutes = require("./routes/random-box")
+tokenRoutes = require("./routes/token")
 mongoose = require("mongoose");
 const app = express();
 
@@ -20,5 +21,6 @@ app.use("/in-game", inGameRoutes);
 app.use("/owner-nft", ownerNFTRoutes);
 app.use("/marketplace", marketplaceRoutes);
 app.use("/randombox",randomBoxRoutes)
+app.use("/token",tokenRoutes)
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`server is running on port ${PORT}`));
