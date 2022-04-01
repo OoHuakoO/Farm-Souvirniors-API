@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176432\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\",\n    \"nft_id\": \"1648784836500\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"pid\" : \"1645168176452\",\n    \"name\" : \"pig\",\n    \"picture\" : \"https://res.cloudinary.com/smilejob/image/upload/v1644302011/Farm-Souvirniors/Pig_gqadmy.png\",\n    \"reward\" : 5,\n    \"type\" : \"animal\",\n     \"cost\" : {\n         \"wood\" : 10,\n         \"fruit\" : 10\n     },\n     \"energy_consumed\" : 5,\n     \"amount_food\" : 5,\n     \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\"\n}",
+							"raw": "{\n    \"name\" : \"cow\",\n    \"picture\" : \"https://res.cloudinary.com/smilejob/image/upload/v1644302011/Farm-Souvirniors/Cow_vpruov.png\",\n    \"reward\" : 5,\n    \"type\" : \"animal\",\n     \"cost\" : {\n         \"wood\" : 10,\n         \"fruit\" : 10\n     },\n     \"energy_consumed\" : 5,\n     \"amount_food\" : 5,\n     \"address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -52,13 +52,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://farm-souvirniors-api.herokuapp.com/in-game/craft-nft",
-							"protocol": "https",
+							"raw": "http://localhost:8000/in-game/craft-nft",
+							"protocol": "http",
 							"host": [
-								"farm-souvirniors-api",
-								"herokuapp",
-								"com"
+								"localhost"
 							],
+							"port": "8000",
 							"path": [
 								"in-game",
 								"craft-nft"
@@ -74,7 +73,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176432\"\n}",
+							"raw": "{\n    \"address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\",\n    \"nft_id\": \"1648784836500\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -91,35 +90,6 @@
 							"path": [
 								"in-game",
 								"feed-nft"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "plant-nft",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"address_wallet\" : \"0x629812063124cE2448703B889D754b232B3622BA\",\n    \"nft_id\": \"1645168176438\",\n    \"position_plant\" :  10\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8000/in-game/plant-nft",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"in-game",
-								"plant-nft"
 							]
 						}
 					},
@@ -144,17 +114,45 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://farm-souvirniors-api.herokuapp.com/in-game/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
-							"protocol": "https",
+							"raw": "http://localhost:8000/in-game/get-owner-nft/0x2cDaf60670b02F99381e55B1c183d2aF4F87833c",
+							"protocol": "http",
 							"host": [
-								"farm-souvirniors-api",
-								"herokuapp",
-								"com"
+								"localhost"
 							],
+							"port": "8000",
 							"path": [
 								"in-game",
 								"get-owner-nft",
-								"0x629812063124cE2448703B889D754b232B3622BA"
+								"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "plant-nft",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\",\n    \"nft_id\": \"1648784836500\",\n    \"position_plant\" :  10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/in-game/plant-nft",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"in-game",
+								"plant-nft"
 							]
 						}
 					},
@@ -293,7 +291,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/owner-nft/get-owner-nft/0x629812063124cE2448703B889D754b232B3622BA",
+							"raw": "http://localhost:8000/owner-nft/get-owner-nft/0x2cDaf60670b02F99381e55B1c183d2aF4F87833c",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -302,7 +300,7 @@
 							"path": [
 								"owner-nft",
 								"get-owner-nft",
-								"0x629812063124cE2448703B889D754b232B3622BA"
+								"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c"
 							]
 						}
 					},
@@ -443,6 +441,98 @@
 								"randombox",
 								"get-one-info-nft",
 								"cow"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "token",
+			"item": [
+				{
+					"name": "depositToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\",\n   \"value\" : 10,\n   \"type\" : \"Wood\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/token/depositToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"token",
+								"depositToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "withdrawToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\",\n   \"value\" : 10,\n   \"type\" : \"Wood\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/token/withdrawToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"token",
+								"withdrawToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check-resource",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"address_wallet\" : \"0x2cDaf60670b02F99381e55B1c183d2aF4F87833c\",\n   \"value\" : 100,\n   \"type\" : \"Wood\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/token/check-resource",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"token",
+								"check-resource"
 							]
 						}
 					},
