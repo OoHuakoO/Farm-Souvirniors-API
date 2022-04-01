@@ -179,8 +179,8 @@ router.post("/feed-nft", async (req, res) => {
                       } else {
                         res.json({
                           data: {
-                            minutesHarvestTime: 0,
-                            secondHarvestTime: 59,
+                            minutesCooldownTime: 0,
+                            secondCooldownTime: 59,
                           },
                           status: "success",
                         });
@@ -244,7 +244,7 @@ router.post("/plant-nft", async (req, res) => {
                       console.log(err);
                     } else {
                       res.json({
-                        data: { minutesFeedTime: 0, secondFeedTime: 59 },
+                        data: { minutesCooldownTime: 0, secondCooldownTime: 59 },
                         status: "success",
                       });
                     }
@@ -401,8 +401,8 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                       type: dataFromDB.type,
                       status: dataFromDB.status,
                       position_plant: dataFromDB.position_plant,
-                      minutesFeedTime: parseInt(minutesFeedTime),
-                      secondFeedTime: parseInt(secondFeedTime),
+                      minutesCooldownTime: parseInt(minutesFeedTime),
+                      secondCooldownTime: parseInt(secondFeedTime),
                     });
                   } else {
                     newListNFT.push({
@@ -411,8 +411,8 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                       picture: dataFromDB.picture,
                       type: dataFromDB.type,
                       status: dataFromDB.status,
-                      minutesFeedTime: parseInt(minutesFeedTime),
-                      secondFeedTime: parseInt(secondFeedTime),
+                      minutesCooldownTime: parseInt(minutesFeedTime),
+                      secondCooldownTime: parseInt(secondFeedTime),
                     });
                   }
                 } else if (
@@ -440,8 +440,8 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                       type: dataFromDB.type,
                       status: dataFromDB.status,
                       position_plant: dataFromDB.position_plant,
-                      minutesHarvestTime: parseInt(minutesHarvestTime),
-                      secondHarvestTime: parseInt(secondHarvestTime),
+                      minutesCooldownTime: parseInt(minutesHarvestTime),
+                      secondCooldownTime: parseInt(secondHarvestTime),
                     });
                   } else {
                     newListNFT.push({
@@ -450,8 +450,8 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                       picture: dataFromDB.picture,
                       type: dataFromDB.type,
                       status: dataFromDB.status,
-                      minutesHarvestTime: parseInt(minutesHarvestTime),
-                      secondHarvestTime: parseInt(secondHarvestTime),
+                      minutesCooldownTime: parseInt(minutesHarvestTime),
+                      secondCooldownTime: parseInt(secondHarvestTime),
                     });
                   }
                 } else if (
@@ -467,8 +467,8 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                       type: dataFromDB.type,
                       status: dataFromDB.status,
                       position_plant: dataFromDB.position_plant,
-                      minutesHarvestTime: 0,
-                      secondHarvestTime: 0,
+                      minutesCooldownTime: 0,
+                      secondCooldownTime: 0,
                     });
                   } else {
                     newListNFT.push({
@@ -477,8 +477,8 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                       picture: dataFromDB.picture,
                       type: dataFromDB.type,
                       status: dataFromDB.status,
-                      minutesHarvestTime: 0,
-                      secondHarvestTime: 0,
+                      minutesCooldownTime: 0,
+                      secondCooldownTime: 0,
                     });
                   }
                 } else if (
@@ -493,8 +493,8 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                       type: dataFromDB.type,
                       status: dataFromDB.status,
                       position_plant: dataFromDB.position_plant,
-                      minutesFeedTime: 0,
-                      secondFeedTime: 0,
+                      minutesCooldownTime: 0,
+                      secondCooldownTime: 0,
                     });
                   } else {
                     newListNFT.push({
@@ -503,8 +503,8 @@ router.get("/get-owner-nft/:address", async (req, res) => {
                       picture: dataFromDB.picture,
                       type: dataFromDB.type,
                       status: dataFromDB.status,
-                      minutesFeedTime: 0,
-                      secondFeedTime: 0,
+                      minutesCooldownTime: 0,
+                      secondCooldownTime: 0,
                     });
                   }
                 } else {
