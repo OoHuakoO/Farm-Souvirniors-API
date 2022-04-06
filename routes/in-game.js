@@ -17,6 +17,9 @@ router.get("/info-nft", async (req, res) => {
 
 router.post("/harvest-nft", async (req, res) => {
   const { address_wallet, nft_id } = req.body;
+  console.log("harvest-nft route");
+  console.log("address_wallet", address_wallet);
+  console.log("nft_id", nft_id);
   Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
     if (err) {
       console.log(err);
@@ -128,6 +131,9 @@ router.post("/harvest-nft", async (req, res) => {
 
 router.post("/feed-nft", async (req, res) => {
   const { address_wallet, nft_id } = req.body;
+  console.log("feed-nft route");
+  console.log("address_wallet", address_wallet);
+  console.log("nft_id", nft_id);
   const dateHarvest = moment().add(1, "minutes");
   Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
     if (err) {
@@ -204,6 +210,10 @@ router.post("/feed-nft", async (req, res) => {
 
 router.post("/plant-nft", async (req, res) => {
   const { address_wallet, nft_id, position_plant } = req.body;
+  console.log("plant-nft route");
+  console.log("address_wallet", address_wallet);
+  console.log("nft_id", nft_id);
+  console.log("position_plant", position_plant);
   const datePlant = moment().add(1, "minutes");
   Owner_nft.findOne({ nft_id: nft_id }, (err, data) => {
     console.log(data);
@@ -244,7 +254,10 @@ router.post("/plant-nft", async (req, res) => {
                       console.log(err);
                     } else {
                       res.json({
-                        data: { minutesCooldownTime: 0, secondCooldownTime: 59 },
+                        data: {
+                          minutesCooldownTime: 0,
+                          secondCooldownTime: 59,
+                        },
                         status: "success",
                       });
                     }
