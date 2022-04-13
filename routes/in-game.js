@@ -372,14 +372,12 @@ router.get("/get-owner-nft/:address", async (req, res) => {
   try {
     const address = req.params.address;
     const newListNFT = [];
-
     await User.findOne({ address_wallet: address })
       .populate("listNFT")
       .exec(async (error, result) => {
         if (error) {
           console.log(error);
         } else {
-          console.log("result", result);
           if (result.listNFT.length === 0) {
             return res.json({
               data: [],
