@@ -185,7 +185,7 @@ router.post("/feed-nft", async (req, res) => {
                       } else {
                         res.json({
                           data: {
-                            cooldownTime: 120,
+                            cooldownTime: 60,
                           },
                           status: "success",
                         });
@@ -252,7 +252,7 @@ router.post("/plant-nft", async (req, res) => {
                     } else {
                       res.json({
                         data: {
-                          cooldownTime: 120,
+                          cooldownTime: 60,
                         },
                         status: "success",
                       });
