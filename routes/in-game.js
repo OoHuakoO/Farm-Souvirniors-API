@@ -33,7 +33,7 @@ router.post("/harvest-nft", async (req, res) => {
             console.log(err);
           } else if (result.energy < data.energy_consumed) {
             res.json({
-              data: "please add energy",
+              data: { text: "please add energy" },
               status: "false",
             });
           } else {
@@ -67,7 +67,7 @@ router.post("/harvest-nft", async (req, res) => {
                           console.log(err);
                         } else {
                           res.json({
-                            data: "harvest successfull",
+                            data: { text: "harvest successfull" },
                             status: "success",
                           });
                         }
@@ -87,7 +87,7 @@ router.post("/harvest-nft", async (req, res) => {
                           console.log(err);
                         } else {
                           res.json({
-                            data: "harvest successfull",
+                            data: { text: "harvest successfull" },
                             status: "success",
                           });
                         }
@@ -107,7 +107,7 @@ router.post("/harvest-nft", async (req, res) => {
                           console.log(err);
                         } else {
                           res.json({
-                            data: "harvest successfull",
+                            data: { text: "harvest successfull" },
                             status: "success",
                           });
                         }
@@ -151,7 +151,7 @@ router.post("/feed-nft", async (req, res) => {
             result.resource.fruit < data.cost.fruit
           ) {
             res.json({
-              data: "please add energy or add resource",
+              data: { text: "please add energy or add resource" },
               status: "false",
             });
           } else {
@@ -199,7 +199,7 @@ router.post("/feed-nft", async (req, res) => {
         });
       } else {
         res.json({
-          data: "waiting for cooldownFeed",
+          data: { text: "waiting for cooldownFeed" },
           status: "false",
         });
       }
@@ -222,7 +222,7 @@ router.post("/plant-nft", async (req, res) => {
         if (err) {
           console.log(err);
         } else if (result.energy < data.energy_consumed) {
-          res.json({ data: "please add energy", status: "false" });
+          res.json({ data: { text: "please add energy" }, status: "false" });
         } else {
           Owner_nft.updateMany(
             {
