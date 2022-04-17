@@ -40,7 +40,7 @@ router.get("/get-user/:address_wallet", async (req, res) => {
 });
 
 router.post("/add-energy", async (req, res) => {
-  const { address_wallet, meat } = req.body;
+  const { address_wallet, meat,energy } = req.body;
   User.findOne({ address_wallet: address_wallet }, async (err, result) => {
     if (err) {
       console.log(err);
@@ -54,7 +54,7 @@ router.post("/add-energy", async (req, res) => {
           {
             $set: {
               "resource.meat": result.resource.meat - meat,
-              energy: result.energy + meat,
+              energy: result.energy + energy,
             },
           },
           async (err) => {
