@@ -22,6 +22,7 @@ router.post("/open-randombox", async (req, res) => {
   try {
     const { pid, address_wallet, name } = req.body;
     Info_nft.findOne({ name: name }, async (err, data) => {
+      console.log(data)
       if (err) {
         console.log(err);
       } else {
