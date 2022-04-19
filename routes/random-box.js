@@ -22,7 +22,7 @@ router.post("/open-randombox", async (req, res) => {
   try {
     const { pid, address_wallet, name } = req.body;
     Info_nft.findOne({ name: name }, async (err, data) => {
-      console.log(data)
+      console.log('data',data)
       if (err) {
         console.log(err);
       } else {
@@ -40,6 +40,7 @@ router.post("/open-randombox", async (req, res) => {
           price: 0,
         });
         await owner_nft.save(async (err, data) => {
+          console.log('owner_nft',data)
           if (err) {
             console.log(err);
           } else {
