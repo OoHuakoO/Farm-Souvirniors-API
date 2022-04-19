@@ -4,7 +4,7 @@ const info_NFTSchema = new Schema({
   name: String,
   picture : String,
   reward: Number,
-  type: String,
+  type_nft: String,
   price : Number,
   cost : Object,
   energy_consumed : Number,
