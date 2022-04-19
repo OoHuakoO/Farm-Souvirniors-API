@@ -121,7 +121,7 @@ router.post("/harvest-nft", async (req, res) => {
         });
       } else {
         res.json({
-          data: "waiting for cooldownHarvest",
+          data: { text: "waiting for cooldownHarvest" },
           status: "false",
         });
       }
