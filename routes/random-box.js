@@ -31,7 +31,7 @@ router.post("/open-randombox", async (req, res) => {
           name: data.name,
           picture: data.picture,
           reward: data.reward,
-          type: data.type,
+          type: data.type_nft,
           cost: data.cost,
           energy_consumed: data.energy_consumed,
           amount_food: data.amount_food,
