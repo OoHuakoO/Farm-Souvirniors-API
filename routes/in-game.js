@@ -33,7 +33,7 @@ router.post("/harvest-nft", async (req, res) => {
             console.log(err);
           } else if (result.energy < data.energy_consumed) {
             res.json({
-              data: { text: "please add energy" },
+              data: { text: "Not enough energy for harvest" },
               status: "false",
             });
           } else {
@@ -121,7 +121,7 @@ router.post("/harvest-nft", async (req, res) => {
         });
       } else {
         res.json({
-          data: { text: "waiting for cooldownHarvest" },
+          data: { text: "Waiting for cooldownHarvest" },
           status: "false",
         });
       }
@@ -151,7 +151,7 @@ router.post("/feed-nft", async (req, res) => {
             result.resource.fruit < data.cost.fruit
           ) {
             res.json({
-              data: { text: "please add energy or add resource" },
+              data: { text: "Not enough fruit or energy for feed" },
               status: "false",
             });
           } else {
@@ -222,7 +222,7 @@ router.post("/plant-nft", async (req, res) => {
         if (err) {
           console.log(err);
         } else if (result.energy < data.energy_consumed) {
-          res.json({ data: { text: "please add energy" }, status: "false" });
+          res.json({ data: { text: "Not enough energy for plant" }, status: "false" });
         } else {
           Owner_nft.updateMany(
             {
