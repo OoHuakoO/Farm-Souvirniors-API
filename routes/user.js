@@ -6,8 +6,8 @@ router.post("/save-user", async (req, res) => {
   const { address_wallet } = req.body;
   const user = new User({
     address_wallet,
-    resource: { fruit: 0, wood: 0, meat: 0 },
-    energy: 0,
+    resource: { fruit: 100, wood: 100, meat: 100 },
+    energy: 500,
   });
   User.findOne({ address_wallet: address_wallet }, async (err, result) => {
     if (err) {
