@@ -148,7 +148,7 @@ router.post("/feed-nft", async (req, res) => {
             console.log(err);
           } else if (
             result.energy < data.energy_consumed ||
-            result.resource.fruit < data.cost.fruit
+            result.resource.fruit < data.amount_food
           ) {
             res.json({
               data: { text: "Not enough fruit or energy for feed" },
@@ -176,7 +176,7 @@ router.post("/feed-nft", async (req, res) => {
                       $set: {
                         energy: result.energy - data.energy_consumed,
                         "resource.fruit":
-                          result.resource.fruit - data.cost.fruit,
+                          result.resource.fruit - data.amount_food,
                       },
                     },
                     (err) => {
